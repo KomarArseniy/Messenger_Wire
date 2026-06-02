@@ -1,6 +1,6 @@
-import type { User } from '@/types/user'
+import type { User } from '@/types/user';
 
-const demoUser: User | null = null
+const demoUser: User | null = null;
 
 function App() {
   return (
@@ -8,7 +8,7 @@ function App() {
       <h1>Wire Messenger</h1>
       <p>{demoUser ? demoUser.username : 'нет пользователя'}</p>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
