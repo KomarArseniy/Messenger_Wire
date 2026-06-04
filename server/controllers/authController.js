@@ -44,7 +44,7 @@ export async function loginUser(req, res) {
 }
 
 export async function registerUser(req, res) {
-    const { reg_login, email, reg_password } = req.body;
+    const { login: reg_login, email, password: reg_password } = req.body;
     const origin = req.headers.origin;
 
     console.log(JSON.stringify(req.body));
