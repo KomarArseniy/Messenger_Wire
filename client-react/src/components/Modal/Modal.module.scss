@@ -1,0 +1,71 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.overlay {
+  @include flex-center;
+  position: fixed;
+  inset: 0;
+  z-index: $z-modal;
+  padding: $space-md;
+  background: rgba(0, 0, 0, 0.5);
+  animation: fade-in $transition-fast;
+}
+
+.modal {
+  @include card;
+  width: 100%;
+  max-width: 420px;
+  max-height: 90vh;
+  overflow-y: auto;
+  animation: slide-up $transition-base;
+}
+
+.header {
+  @include flex-between;
+  padding: $space-md $space-lg;
+  border-bottom: 1px solid $color-border;
+}
+
+.title {
+  font-size: $font-size-lg;
+  font-weight: 600;
+}
+
+.close {
+  @include button-reset;
+  @include flex-center;
+  width: 32px;
+  height: 32px;
+  border-radius: $radius-full;
+  font-size: 24px;
+  color: $color-text-secondary;
+  transition: background-color $transition-fast;
+
+  &:hover {
+    background: $color-bg-hover;
+  }
+}
+
+.body {
+  padding: $space-lg;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

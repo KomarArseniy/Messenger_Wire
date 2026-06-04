@@ -1,0 +1,80 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.button {
+  @include flex-center;
+  gap: $space-sm;
+  border: 1px solid transparent;
+  border-radius: $radius-md;
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    background-color $transition-fast,
+    border-color $transition-fast,
+    opacity $transition-fast;
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.sm {
+  padding: $space-xs $space-md;
+  font-size: $font-size-sm;
+}
+
+.md {
+  padding: $space-sm $space-lg;
+  font-size: $font-size-base;
+}
+
+.lg {
+  padding: $space-md $space-xl;
+  font-size: $font-size-lg;
+}
+
+.primary {
+  background: $color-accent;
+  color: $color-text-on-accent;
+
+  &:hover:not(:disabled) {
+    background: $color-accent-hover;
+  }
+
+  &:active:not(:disabled) {
+    background: $color-accent-active;
+  }
+}
+
+.secondary {
+  background: $color-bg-secondary;
+  color: $color-text;
+  border-color: $color-border;
+
+  &:hover:not(:disabled) {
+    background: $color-bg-hover;
+  }
+}
+
+.ghost {
+  background: transparent;
+  color: $color-text;
+
+  &:hover:not(:disabled) {
+    background: $color-bg-hover;
+  }
+}
+
+.danger {
+  background: $color-danger;
+  color: $color-text-on-accent;
+
+  &:hover:not(:disabled) {
+    opacity: 0.9;
+  }
+}
+
+.fullWidth {
+  width: 100%;
+}

@@ -1,0 +1,31 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.avatar {
+  @include flex-center;
+  flex-shrink: 0;
+  border-radius: $radius-full;
+  object-fit: cover;
+  color: $color-text-on-accent;
+  font-weight: 600;
+  text-transform: uppercase;
+  user-select: none;
+}
+
+.sm {
+  width: 32px;
+  height: 32px;
+  font-size: $font-size-sm;
+}
+
+.md {
+  width: 44px;
+  height: 44px;
+  font-size: $font-size-base;
+}
+
+.lg {
+  width: 64px;
+  height: 64px;
+  font-size: $font-size-xl;
+}
