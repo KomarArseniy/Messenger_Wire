@@ -4,7 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import { AuthInput } from '@/components/AuthInput';
 import { UserIcon, MailIcon, LockIcon, BackIcon } from '@/components/icons';
 import { register } from '@/api/authApi';
-import { setFallbackToken, HttpError } from '@/lib/httpClient';
+import { HttpError } from '@/lib/httpClient';
+import { useSessionStore } from '@/store/sessionStore';
 import {
   validateLogin,
   validateEmail,
@@ -59,7 +60,7 @@ export function RegisterCard({ onSwitchToLogin }: RegisterCardProps) {
         email: email.trim(),
         password,
       });
-      setFallbackToken(res.accessToken);
+      useSessionStore.getState().setSession(res.accessToken, res.user);
       navigate('/chat');
     } catch (err) {
       setFormError(

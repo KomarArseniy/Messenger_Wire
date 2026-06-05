@@ -4,7 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import { AuthInput } from '@/components/AuthInput';
 import { UserIcon, LockIcon } from '@/components/icons';
 import { login } from '@/api/authApi';
-import { setFallbackToken, HttpError } from '@/lib/httpClient';
+import { HttpError } from '@/lib/httpClient';
+import { useSessionStore } from '@/store/sessionStore';
 import { validateLogin } from '@/lib/validation';
 import styles from './AuthPage.module.scss';
 
@@ -41,7 +42,7 @@ export function LoginCard({ onSwitchToRegister }: LoginCardProps) {
     setSubmitting(true);
     try {
       const res = await login({ login: loginValue.trim(), password });
-      setFallbackToken(res.accessToken);
+      useSessionStore.getState().setSession(res.accessToken, res.user);
       navigate('/chat');
     } catch (err) {
       setFormError(

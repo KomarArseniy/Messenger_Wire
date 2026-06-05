@@ -1,13 +1,13 @@
-import type { ComponentPropsWithoutRef, ReactNode } from 'react'
-import { useId, useState } from 'react'
-import { EyeIcon, EyeOffIcon } from '@/components/icons'
-import styles from './AuthInput.module.scss'
+import type { ComponentPropsWithoutRef, ReactNode } from 'react';
+import { useId, useState } from 'react';
+import { EyeIcon, EyeOffIcon } from '@/components/icons';
+import styles from './AuthInput.module.scss';
 
 interface AuthInputProps extends ComponentPropsWithoutRef<'input'> {
-  label: string
-  icon: ReactNode
-  error?: string
-  isPassword?: boolean
+  label: string;
+  icon: ReactNode;
+  error?: string;
+  isPassword?: boolean;
 }
 
 export function AuthInput({
@@ -19,11 +19,11 @@ export function AuthInput({
   type,
   ...rest
 }: AuthInputProps) {
-  const generatedId = useId()
-  const inputId = id ?? generatedId
-  const [visible, setVisible] = useState(false)
+  const generatedId = useId();
+  const inputId = id ?? generatedId;
+  const [visible, setVisible] = useState(false);
 
-  const inputType = isPassword ? (visible ? 'text' : 'password') : type
+  const inputType = isPassword ? (visible ? 'text' : 'password') : type;
 
   return (
     <div className={styles.field}>
@@ -53,5 +53,5 @@ export function AuthInput({
       </div>
       <span className={styles.error}>{error ?? ''}</span>
     </div>
-  )
+  );
 }

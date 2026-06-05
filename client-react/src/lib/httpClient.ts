@@ -6,14 +6,6 @@ export function setAccessTokenGetter(getter: () => string | null) {
   accessTokenGetter = getter;
 }
 
-let fallbackToken: string | null = null;
-
-export function setFallbackToken(token: string | null) {
-  fallbackToken = token;
-}
-
-accessTokenGetter = () => fallbackToken;
-
 export class HttpError extends Error {
   status: number;
 

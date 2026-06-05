@@ -21,11 +21,7 @@
     width: 640px;
     height: 640px;
     transform: translate(-50%, -50%);
-    background: radial-gradient(
-      circle,
-      $color-auth-glow 0%,
-      transparent 70%
-    );
+    background: radial-gradient(circle, $color-auth-glow 0%, transparent 70%);
     pointer-events: none;
   }
 }
