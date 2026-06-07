@@ -38,6 +38,25 @@ export async function getChatMessages(chatId, limit = 50, offset = 0) {
     }
 }
 
+export async function getChatMessagesController(req, res) {
+    const { chatId } = req.params;
+    const limit = Math.min(parseInt(req.query.limit) || 50, 100);
+    const offset = parseInt(req.query.offset) || 0;
+
+    if (!chatId) {
+        return res.status(400).json({ success: false, error: 'Не указан чат' });
+    }
+
+    try {
+        const messages = await ChatModel.getMessages(chatId, limit, offset);
+        return res.status(200).json({ success: true, messages: messages ?? [] });
+    }
+    catch (error) {
+        console.log('Ошибка получения сообщений чата: ', error);
+        return res.status(500).json({ success: false, error: 'Ошибка получения сообщений' });
+    }
+}
+
 export async function getUserChats(req, res) {
     const userId = req.user.id
     // const userId = req.query.userId || req.user?.id;
@@ -70,8 +89,7 @@ export async function createUserChat(req, res) {
     const {  type, members } = req.body;
     let { name } = req.body;
     let avatar = null;
-    // const creatorId = req.user.id;
-    const {creatorId } = req.body;
+    const creatorId = req.user.id;
 
     if (!type || !members || !Array.isArray(members))  {
         return res.status(400).json({error: "Неверные данные"});

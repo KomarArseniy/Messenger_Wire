@@ -30,30 +30,34 @@ export default class ChatModel {
         return rows[0];
     }
 
-    static async getMessages(chatId){
+    static async getMessages(chatId, limit = 50, offset = 0){
         try {
             const query = `
-                SELECT 
-                    m.id,
-                    m.content,
-                    m.created_at AT TIME ZONE 'UTC' AT TIME ZONE 'Europe/Moscow' as created_at,
-                    u.id as sender_id,
-                    CASE
-                        WHEN c.is_group = true THEN u.avatar_url
-                        ELSE NULL
-                    END as avatar_url,
-                    CASE 
-                        WHEN c.is_group = true THEN u.full_name
-                        ELSE NULL
-                    END as full_name
-                FROM messages m
-                JOIN users u ON m.user_id = u.id
-                JOIN chats c ON m.chat_id = c.id
-                WHERE m.chat_id = $1
-                ORDER BY m.created_at ASC
+                SELECT * FROM (
+                    SELECT 
+                        m.id,
+                        m.content,
+                        m.created_at AT TIME ZONE 'UTC' AT TIME ZONE 'Europe/Moscow' as created_at,
+                        u.id as sender_id,
+                        CASE
+                            WHEN c.is_group = true THEN u.avatar_url
+                            ELSE NULL
+                        END as avatar_url,
+                        CASE 
+                            WHEN c.is_group = true THEN u.full_name
+                            ELSE NULL
+                        END as full_name
+                    FROM messages m
+                    JOIN users u ON m.user_id = u.id
+                    JOIN chats c ON m.chat_id = c.id
+                    WHERE m.chat_id = $1
+                    ORDER BY m.created_at DESC
+                    LIMIT $2 OFFSET $3
+                ) AS page
+                ORDER BY created_at ASC
             `
 
-            const result = await db.query(query, [chatId]);
+            const result = await db.query(query, [chatId, limit, offset]);
             return result.rows;
 
         }
