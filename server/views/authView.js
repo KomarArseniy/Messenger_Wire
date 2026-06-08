@@ -5,6 +5,7 @@ export function loginSuccessResponse(user, accessToken) {
         accessToken,
         user: {
             id: user.id,
+            login: user.login,
             username: user.username,
             email: user.email
         }
@@ -25,6 +26,7 @@ export function registerSuccessResponse(user, accessToken) {
         accessToken,
         user: {
             id: user.id,
+            login: user.login,
             username: user.username,
             email: user.email
         }

@@ -30,7 +30,7 @@ export async function authenticateUser(login) {
 export async function getUserByID(userId) {
     try {
         const result = await db.query(
-            'SELECT id, username, last_seen_at, status, email, avatar_url, full_name, about FROM users WHERE id = $1', [userId]
+            'SELECT id, login, username, last_seen_at, status, email, avatar_url, full_name, about FROM users WHERE id = $1', [userId]
         )
         return result.rows[0];
     }

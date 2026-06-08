@@ -3,6 +3,7 @@ export function getUserSuccessResponse(success, userData) {
         success: success,
         user: {
             id: userData.id,
+            login: userData.login,
             username: userData.username,
             email: userData.email,
             avatar_url: userData.avatar_url,

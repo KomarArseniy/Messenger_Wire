@@ -66,14 +66,7 @@ export async function getUserChats(req, res) {
 
     try {
         const userChats = await ChatModel.getChats(userId);
-        if (!userChats) {
-            return res.status(404).json({
-                success: false,
-                error: 'Чаты не найдены'
-            })
-        }
-
-        res.status(200).json(getUserChatsSuccessResponse(true,userChats));
+        res.status(200).json(getUserChatsSuccessResponse(true, userChats ?? []));
     }
     catch (error) {
         console.log('Ошибка получения информации о чатах пользователя: ', error)
