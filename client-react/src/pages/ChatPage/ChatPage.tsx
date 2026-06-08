@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { Avatar, Button, Spinner } from '@/components';
 import { useSessionStore } from '@/store/sessionStore';
 import { useChats } from '@/hooks/useChats';
+import { queryClient } from '@/lib/queryClient';
 
 export function ChatPage() {
   const navigate = useNavigate();
@@ -11,6 +12,7 @@ export function ChatPage() {
 
   function handleLogout() {
     clearSession();
+    queryClient.clear();
     navigate('/login');
   }
 
@@ -29,14 +31,16 @@ export function ChatPage() {
         </Button>
       </div>
 
-      <p>Вы вошли как {user?.username ?? 'пользователь'}.</p>
+      <p>Вы вошли как {user?.username ?? user?.login ?? 'пользователь'}.</p>
 
       {isLoading && <Spinner />}
       {isError && <p>Не удалось загрузить чаты</p>}
 
-      {chats && chats.length === 0 && <p>Чатов пока нет</p>}
+      {!isLoading && !isError && chats && chats.length === 0 && (
+        <p>Чатов пока нет</p>
+      )}
 
-      {chats && chats.length > 0 && (
+      {!isError && chats && chats.length > 0 && (
         <div style={{ display: 'grid', gap: 8 }}>
           {chats.map((chat) => (
             <div
