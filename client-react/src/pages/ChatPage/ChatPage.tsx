@@ -1,9 +1,12 @@
 import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 import { Avatar, Button, Spinner } from '@/components';
 import { useSessionStore } from '@/store/sessionStore';
 import { useUiStore } from '@/store/uiStore';
 import { useChats } from '@/hooks/useChats';
 import { useMessages } from '@/hooks/useMessages';
+import { useSocketConnection } from '@/hooks/useSocketConnection';
+import { joinRoom, disconnectSocket } from '@/lib/socket';
 import { queryClient } from '@/lib/queryClient';
 
 export function ChatPage() {
@@ -13,6 +16,14 @@ export function ChatPage() {
   const activeChatId = useUiStore((s) => s.activeChatId);
   const setActiveChatId = useUiStore((s) => s.setActiveChatId);
 
+  useSocketConnection(user?.id);
+
+  useEffect(() => {
+    if (activeChatId !== null) {
+      joinRoom(activeChatId);
+    }
+  }, [activeChatId]);
+
   const { data: chats, isLoading, isError } = useChats();
   const {
     data: messages,
@@ -21,6 +32,7 @@ export function ChatPage() {
   } = useMessages(activeChatId);
 
   function handleLogout() {
+    disconnectSocket();
     clearSession();
     queryClient.clear();
     setActiveChatId(null);
