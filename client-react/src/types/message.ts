@@ -1,3 +1,5 @@
+export type MessageStatus = 'sending' | 'sent' | 'error';
+
 export interface Message {
   id: number;
   content: string;
@@ -5,6 +7,8 @@ export interface Message {
   sender_id: number;
   avatar_url: string | null;
   full_name: string | null;
+  status?: MessageStatus;
+  tempId?: string;
 }
 
 export interface MessagesResponse {
