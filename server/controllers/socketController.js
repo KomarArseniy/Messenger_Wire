@@ -32,7 +32,7 @@ export function configureSockets(io) {
         })
 
         // Обработка отправки сообщений
-        socket.on("send_message", async (data) => {
+        socket.on("send_message", async (data, callback) => {
             const { sender_id, chatId, isGroupChat, content, created_at } = data;
             try {
                 let full_name = null;
@@ -67,8 +67,21 @@ export function configureSockets(io) {
                     },
                 });
                 console.log(`Сообщение от ${sender_id} для ${chatId}: ${content}`);
+
+                if (typeof callback === 'function') {
+                    callback({
+                        success: true,
+                        message: {
+                            id: message.id,
+                            created_at: message.created_at,
+                        },
+                    });
+                }
             } catch (error) {
                 console.error('Ошибка отправки сообщения:', error);
+                if (typeof callback === 'function') {
+                    callback({ success: false, error: 'Не удалось отправить сообщение' });
+                }
             }
         })
 
