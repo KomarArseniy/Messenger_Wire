@@ -53,6 +53,7 @@ export function useSendMessage(chatId: number | null) {
           id: ack.message?.id ?? m.id,
           status: 'sent',
         }));
+        queryClient.invalidateQueries({ queryKey: queryKeys.chats });
       } catch {
         patch((m) => ({ ...m, status: 'error' }));
       }

@@ -8,6 +8,7 @@ import { useChats } from '@/hooks/useChats';
 import { useMessages } from '@/hooks/useMessages';
 import { useSendMessage } from '@/hooks/useSendMessage';
 import { useSocketConnection } from '@/hooks/useSocketConnection';
+import { useIncomingMessages } from '@/hooks/useIncomingMessages';
 import { joinRoom, disconnectSocket } from '@/lib/socket';
 import { queryClient } from '@/lib/queryClient';
 
@@ -19,7 +20,8 @@ export function ChatPage() {
   const setActiveChatId = useUiStore((s) => s.setActiveChatId);
   const [draft, setDraft] = useState('');
 
-  useSocketConnection(user?.id);
+  const isConnected = useSocketConnection(user?.id);
+  useIncomingMessages(isConnected);
   const send = useSendMessage(activeChatId);
 
   useEffect(() => {

@@ -1,10 +1,27 @@
-import { useEffect } from 'react';
-import { connectSocket } from '@/lib/socket';
+import { useEffect, useState } from 'react';
+import { connectSocket, getSocket } from '@/lib/socket';
 
 export function useSocketConnection(userId: number | undefined) {
+  const [isConnected, setIsConnected] = useState(
+    () => getSocket()?.connected ?? false,
+  );
+
   useEffect(() => {
     if (userId === undefined) return;
 
-    connectSocket(userId);
+    const socket = connectSocket(userId);
+
+    const onConnect = () => setIsConnected(true);
+    const onDisconnect = () => setIsConnected(false);
+
+    socket.on('connect', onConnect);
+    socket.on('disconnect', onDisconnect);
+
+    return () => {
+      socket.off('connect', onConnect);
+      socket.off('disconnect', onDisconnect);
+    };
   }, [userId]);
+
+  return isConnected;
 }
