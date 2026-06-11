@@ -39,6 +39,10 @@ export default class ChatModel {
                         m.content,
                         m.created_at AT TIME ZONE 'UTC' AT TIME ZONE 'Europe/Moscow' as created_at,
                         u.id as sender_id,
+                        NOT EXISTS (
+                            SELECT 1 FROM unread_messages um
+                            WHERE um.message_id = m.id
+                        ) as is_read,
                         CASE
                             WHEN c.is_group = true THEN u.avatar_url
                             ELSE NULL
@@ -64,6 +68,24 @@ export default class ChatModel {
         catch (error) {
             throw error;
         }
+    }
+
+    static async markChatMessagesRead(chatId, readerId, client = db) {
+        const { rows } = await client.query(
+            `DELETE FROM unread_messages
+             WHERE chat_id = $1 AND user_id = $2
+             RETURNING message_id`,
+            [chatId, readerId]
+        );
+        return rows.map((r) => r.message_id);
+    }
+
+    static async getChatMemberIds(chatId, client = db) {
+        const { rows } = await client.query(
+            `SELECT user_id FROM chat_members WHERE chat_id = $1`,
+            [chatId]
+        );
+        return rows.map((r) => r.user_id);
     }
 
     static async getChats(userId) {

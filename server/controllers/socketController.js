@@ -3,6 +3,7 @@ import { createMessage } from "./chatControllers.js";
 import { createUnreadMessage } from "./chatControllers.js";
 import { createUserChat } from "./chatControllers.js";
 import { getUserByID } from "../models/authModel.js";
+import ChatModel from "../models/chatModel.js";
 
 export function configureSockets(io) {
     let users = {}
@@ -39,6 +40,18 @@ export function configureSockets(io) {
                 let avatar_url = null;
 
                 const message = await createMessage(chatId, sender_id, content, created_at);
+
+                try {
+                    const memberIds = await ChatModel.getChatMemberIds(chatId);
+                    for (const memberId of memberIds) {
+                        if (memberId !== sender_id) {
+                            await createUnreadMessage(chatId, memberId, message.id);
+                        }
+                    }
+                } catch (unreadErr) {
+                    console.error('Ошибка создания непрочитанных:', unreadErr);
+                }
+
                 if (isGroupChat) {
                     if (userCache.has(sender_id)) {
                         const cachedUser = userCache.get(sender_id);
@@ -92,6 +105,22 @@ export function configureSockets(io) {
                 callback(data);
             } catch (error) {
                 console.error('Ошибка отправки уведомления:', error);
+            }
+        })
+
+        socket.on('mark_read', async (data, callback) => {
+            const { chatId, readerId } = data;
+            try {
+                const messageIds = await ChatModel.markChatMessagesRead(chatId, readerId);
+                socket.to(chatId).emit('messages_read', { chatId, messageIds });
+                if (typeof callback === 'function') {
+                    callback({ success: true, messageIds });
+                }
+            } catch (error) {
+                console.error('Ошибка отметки прочтения:', error);
+                if (typeof callback === 'function') {
+                    callback({ success: false });
+                }
             }
         })
 
