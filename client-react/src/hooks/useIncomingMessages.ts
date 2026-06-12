@@ -1,11 +1,15 @@
 import { useEffect } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
-import { getSocket } from '@/lib/socket';
+import { getSocket, markRead } from '@/lib/socket';
 import { queryKeys } from '@/lib/queryKeys';
 import type { Message } from '@/types/message';
 import type { NewMessageEvent, MessagesReadEvent } from '@/types/socket';
 
-export function useIncomingMessages(isConnected: boolean) {
+export function useIncomingMessages(
+  isConnected: boolean,
+  activeChatId: number | null,
+  userId: number | undefined,
+) {
   const queryClient = useQueryClient();
 
   useEffect(() => {
@@ -22,7 +26,11 @@ export function useIncomingMessages(isConnected: boolean) {
         return [...old, message];
       });
 
-      queryClient.invalidateQueries({ queryKey: queryKeys.chats });
+      if (chatId === activeChatId && userId !== undefined) {
+        markRead(chatId, userId);
+      } else {
+        queryClient.invalidateQueries({ queryKey: queryKeys.chats });
+      }
     }
 
     function handleMessagesRead(event: MessagesReadEvent) {
@@ -45,5 +53,5 @@ export function useIncomingMessages(isConnected: boolean) {
       socket.off('new_message', handleNewMessage);
       socket.off('messages_read', handleMessagesRead);
     };
-  }, [queryClient, isConnected]);
+  }, [queryClient, isConnected, activeChatId, userId]);
 }

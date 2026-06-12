@@ -27,7 +27,7 @@ export function ChatPage() {
   const [draft, setDraft] = useState('');
 
   const isConnected = useSocketConnection(user?.id);
-  useIncomingMessages(isConnected);
+  useIncomingMessages(isConnected, activeChatId, user?.id);
   const send = useSendMessage(activeChatId);
 
   useEffect(() => {
