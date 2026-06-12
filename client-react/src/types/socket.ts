@@ -23,8 +23,14 @@ export interface NewMessageEvent {
   message: Message;
 }
 
+export interface MessagesReadEvent {
+  chatId: number;
+  messageIds: number[];
+}
+
 export interface ServerToClientEvents {
   new_message: (event: NewMessageEvent) => void;
+  messages_read: (event: MessagesReadEvent) => void;
 }
 
 export interface ClientToServerEvents {
@@ -33,5 +39,9 @@ export interface ClientToServerEvents {
   send_message: (
     payload: SendMessagePayload,
     callback: (ack: SendMessageAck) => void,
+  ) => void;
+  mark_read: (
+    payload: { chatId: number; readerId: number },
+    callback?: (ack: { success: boolean; messageIds?: number[] }) => void,
   ) => void;
 }

@@ -1,4 +1,4 @@
-export type MessageStatus = 'sending' | 'sent' | 'error';
+export type MessageStatus = 'sending' | 'sent' | 'read' | 'error';
 
 export interface Message {
   id: number;
@@ -7,6 +7,7 @@ export interface Message {
   sender_id: number;
   avatar_url: string | null;
   full_name: string | null;
+  is_read?: boolean;
   status?: MessageStatus;
   tempId?: string;
 }

@@ -23,10 +23,19 @@ const allowedOrigins = [
     'http://localhost:5174',
 ];
 
+const corsOrigin = (origin, callback) => {
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.includes(origin)) return callback(null, true);
+    if (/^http:\/\/(localhost|127\.0\.0\.1):\d+$/.test(origin)) {
+        return callback(null, true);
+    }
+    return callback(new Error('Not allowed by CORS'));
+};
+
 app.use(cookieParser());
 app.use(express.json());
 app.use(cors( {
-    origin: allowedOrigins,
+    origin: corsOrigin,
     credentials: true
 }));
 

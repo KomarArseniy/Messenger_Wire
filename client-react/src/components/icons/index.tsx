@@ -86,6 +86,15 @@ export function CheckIcon(props: IconProps) {
   );
 }
 
+export function DoubleCheckIcon(props: IconProps) {
+  return (
+    <svg {...base} width={16} height={14} viewBox="0 0 28 24" {...props}>
+      <path d="M16 6 7 17l-4-4" />
+      <path d="M25 6 14.5 17l-1.5-1.5" />
+    </svg>
+  );
+}
+
 export function AlertIcon(props: IconProps) {
   return (
     <svg {...base} width={14} height={14} {...props}>

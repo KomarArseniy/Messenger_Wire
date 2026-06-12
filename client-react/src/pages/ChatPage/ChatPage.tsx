@@ -1,7 +1,13 @@
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { Avatar, Button, Spinner } from '@/components';
-import { ClockIcon, CheckIcon, AlertIcon, SendIcon } from '@/components/icons';
+import {
+  ClockIcon,
+  CheckIcon,
+  DoubleCheckIcon,
+  AlertIcon,
+  SendIcon,
+} from '@/components/icons';
 import { useSessionStore } from '@/store/sessionStore';
 import { useUiStore } from '@/store/uiStore';
 import { useChats } from '@/hooks/useChats';
@@ -9,7 +15,7 @@ import { useMessages } from '@/hooks/useMessages';
 import { useSendMessage } from '@/hooks/useSendMessage';
 import { useSocketConnection } from '@/hooks/useSocketConnection';
 import { useIncomingMessages } from '@/hooks/useIncomingMessages';
-import { joinRoom, disconnectSocket } from '@/lib/socket';
+import { joinRoom, disconnectSocket, markRead } from '@/lib/socket';
 import { queryClient } from '@/lib/queryClient';
 
 export function ChatPage() {
@@ -25,10 +31,13 @@ export function ChatPage() {
   const send = useSendMessage(activeChatId);
 
   useEffect(() => {
-    if (activeChatId !== null) {
-      joinRoom(activeChatId);
+    if (activeChatId !== null && user) {
+      joinRoom(activeChatId).then(() => {
+        markRead(activeChatId, user.id);
+        queryClient.invalidateQueries({ queryKey: ['chats'] });
+      });
     }
-  }, [activeChatId]);
+  }, [activeChatId, user]);
 
   const { data: chats, isLoading, isError } = useChats();
   const {
@@ -184,6 +193,7 @@ export function ChatPage() {
                       >
                         {msg.status === 'sending' && <ClockIcon />}
                         {msg.status === 'sent' && <CheckIcon />}
+                        {msg.status === 'read' && <DoubleCheckIcon />}
                         {msg.status === 'error' && <AlertIcon />}
                       </span>
                     )}

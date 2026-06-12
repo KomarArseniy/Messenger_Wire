@@ -51,6 +51,10 @@ export function sendMessage(payload: SendMessagePayload, timeoutMs = 10000) {
   });
 }
 
+export function markRead(chatId: number, readerId: number) {
+  socket?.emit('mark_read', { chatId, readerId });
+}
+
 export function disconnectSocket() {
   if (socket) {
     socket.disconnect();
