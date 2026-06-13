@@ -27,7 +27,7 @@ export function useIncomingMessages(
       });
 
       if (chatId === activeChatId && userId !== undefined) {
-        markRead(chatId, userId);
+        markRead(chatId);
       } else {
         queryClient.invalidateQueries({ queryKey: queryKeys.chats });
       }
@@ -46,12 +46,18 @@ export function useIncomingMessages(
       });
     }
 
+    function handlePresence() {
+      queryClient.invalidateQueries({ queryKey: queryKeys.chats });
+    }
+
     socket.on('new_message', handleNewMessage);
     socket.on('messages_read', handleMessagesRead);
+    socket.on('presence', handlePresence);
 
     return () => {
       socket.off('new_message', handleNewMessage);
       socket.off('messages_read', handleMessagesRead);
+      socket.off('presence', handlePresence);
     };
   }, [queryClient, isConnected, activeChatId, userId]);
 }

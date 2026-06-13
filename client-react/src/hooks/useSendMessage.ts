@@ -42,7 +42,6 @@ export function useSendMessage(chatId: number | null) {
 
       try {
         const ack = await sendMessage({
-          sender_id: user.id,
           chatId,
           isGroupChat,
           content: text,

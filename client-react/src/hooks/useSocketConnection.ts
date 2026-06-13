@@ -1,15 +1,19 @@
 import { useEffect, useState } from 'react';
-import { connectSocket, getSocket } from '@/lib/socket';
+import { connectSocket, getSocket, reconnectSocket } from '@/lib/socket';
 
-export function useSocketConnection(userId: number | undefined) {
+export function useSocketConnection(token: string | null) {
   const [isConnected, setIsConnected] = useState(
     () => getSocket()?.connected ?? false,
   );
 
   useEffect(() => {
-    if (userId === undefined) return;
+    if (!token) return;
 
-    const socket = connectSocket(userId);
+    const existing = getSocket();
+    if (existing) {
+      reconnectSocket(token);
+    }
+    const socket = existing ?? connectSocket(token);
 
     const onConnect = () => setIsConnected(true);
     const onDisconnect = () => setIsConnected(false);
@@ -21,7 +25,7 @@ export function useSocketConnection(userId: number | undefined) {
       socket.off('connect', onConnect);
       socket.off('disconnect', onDisconnect);
     };
-  }, [userId]);
+  }, [token]);
 
   return isConnected;
 }

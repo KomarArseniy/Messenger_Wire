@@ -1,7 +1,6 @@
 import type { Message } from './message';
 
 export interface SendMessagePayload {
-  sender_id: number;
   chatId: number;
   isGroupChat: boolean;
   content: string;
@@ -28,20 +27,25 @@ export interface MessagesReadEvent {
   messageIds: number[];
 }
 
+export interface PresenceEvent {
+  userId: number;
+  isOnline: boolean;
+}
+
 export interface ServerToClientEvents {
   new_message: (event: NewMessageEvent) => void;
   messages_read: (event: MessagesReadEvent) => void;
+  presence: (event: PresenceEvent) => void;
 }
 
 export interface ClientToServerEvents {
-  authenticate: (userId: number) => void;
   join_room: (room: number, callback: (room: number) => void) => void;
   send_message: (
     payload: SendMessagePayload,
     callback: (ack: SendMessageAck) => void,
   ) => void;
   mark_read: (
-    payload: { chatId: number; readerId: number },
+    payload: { chatId: number },
     callback?: (ack: { success: boolean; messageIds?: number[] }) => void,
   ) => void;
 }

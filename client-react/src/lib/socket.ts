@@ -11,19 +11,22 @@ type AppSocket = Socket<ServerToClientEvents, ClientToServerEvents>;
 
 let socket: AppSocket | null = null;
 
-export function connectSocket(userId: number): AppSocket {
+export function connectSocket(token: string): AppSocket {
   if (socket) return socket;
 
   socket = io(API_BASE_URL, {
     transports: ['websocket'],
     autoConnect: true,
-  });
-
-  socket.on('connect', () => {
-    socket?.emit('authenticate', userId);
+    auth: { token },
   });
 
   return socket;
+}
+
+export function reconnectSocket(token: string) {
+  if (!socket) return;
+  socket.auth = { token };
+  socket.disconnect().connect();
 }
 
 export function getSocket(): AppSocket | null {
@@ -51,8 +54,8 @@ export function sendMessage(payload: SendMessagePayload, timeoutMs = 10000) {
   });
 }
 
-export function markRead(chatId: number, readerId: number) {
-  socket?.emit('mark_read', { chatId, readerId });
+export function markRead(chatId: number) {
+  socket?.emit('mark_read', { chatId });
 }
 
 export function disconnectSocket() {

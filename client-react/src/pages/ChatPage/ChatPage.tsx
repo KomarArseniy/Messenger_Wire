@@ -17,11 +17,12 @@ import styles from './ChatPage.module.scss';
 export function ChatPage() {
   const navigate = useNavigate();
   const user = useSessionStore((s) => s.user);
+  const accessToken = useSessionStore((s) => s.accessToken);
   const clearSession = useSessionStore((s) => s.clearSession);
   const activeChatId = useUiStore((s) => s.activeChatId);
   const setActiveChatId = useUiStore((s) => s.setActiveChatId);
 
-  const isConnected = useSocketConnection(user?.id);
+  const isConnected = useSocketConnection(accessToken);
   useIncomingMessages(isConnected, activeChatId, user?.id);
   const send = useSendMessage(activeChatId);
 
@@ -37,7 +38,7 @@ export function ChatPage() {
   useEffect(() => {
     if (activeChatId !== null && user) {
       joinRoom(activeChatId).then(() => {
-        markRead(activeChatId, user.id);
+        markRead(activeChatId);
         queryClient.invalidateQueries({ queryKey: ['chats'] });
       });
     }
