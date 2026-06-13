@@ -1,0 +1,71 @@
+@use 'variables' as *;
+
+.row {
+  display: flex;
+  margin-bottom: 2px;
+}
+
+.mine {
+  justify-content: flex-end;
+}
+
+.theirs {
+  justify-content: flex-start;
+}
+
+.bubble {
+  position: relative;
+  max-width: 70%;
+  padding: 7px 10px 5px 12px;
+  border-radius: 16px;
+  font-size: 14px;
+  line-height: 1.35;
+  word-break: break-word;
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.mine .bubble {
+  background: $color-auth-accent;
+  color: #fff;
+  border-bottom-right-radius: 4px;
+}
+
+.theirs .bubble {
+  background: #fff;
+  color: $color-text;
+  border: 1px solid $color-border;
+  border-bottom-left-radius: 4px;
+}
+
+.content {
+  white-space: pre-wrap;
+}
+
+.meta {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  flex-shrink: 0;
+  transform: translateY(2px);
+}
+
+.time {
+  font-size: 10px;
+  opacity: 0.7;
+}
+
+.status {
+  display: flex;
+  align-items: center;
+}
+
+.status svg {
+  width: 14px;
+  height: 14px;
+}
+
+.errorIcon {
+  color: #ffd7d7;
+}

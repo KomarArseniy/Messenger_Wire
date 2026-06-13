@@ -1,0 +1,50 @@
+@use 'variables' as *;
+
+.form {
+  display: flex;
+  gap: $space-sm;
+  padding: $space-md $space-lg;
+  border-top: 1px solid $color-border;
+  background: #fff;
+}
+
+.input {
+  flex: 1;
+  height: 42px;
+  padding: 0 $space-md;
+  border: 1px solid $color-border;
+  border-radius: $radius-full;
+  background: $color-bg-secondary;
+  font-size: 14px;
+  transition: all $transition-fast;
+
+  &:focus {
+    outline: none;
+    background: #fff;
+    border-color: $color-auth-accent;
+  }
+}
+
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border: none;
+  border-radius: 50%;
+  background: $color-auth-accent;
+  color: #fff;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all $transition-fast;
+
+  &:hover:not(:disabled) {
+    background: $color-auth-accent-hover;
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+}

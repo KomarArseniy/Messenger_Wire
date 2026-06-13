@@ -1,0 +1,27 @@
+@use 'variables' as *;
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: $space-md;
+  padding: $space-sm $space-lg;
+  height: 64px;
+  border-bottom: 1px solid $color-border;
+  background: #fff;
+  flex-shrink: 0;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+}
+
+.name {
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.status {
+  font-size: 12px;
+  color: $color-text-secondary;
+}
