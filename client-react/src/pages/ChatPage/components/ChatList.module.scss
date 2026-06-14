@@ -1,11 +1,11 @@
 @use 'variables' as *;
 
 .sidebar {
-  width: 340px;
+  width: 400px;
   display: flex;
   flex-direction: column;
   border-right: 1px solid $color-border;
-  background: #fff;
+  background: $color-chat-sidebar;
   flex-shrink: 0;
 }
 
@@ -13,9 +13,9 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: $space-sm;
-  padding: $space-sm $space-md;
-  height: 64px;
+  gap: $space-md;
+  padding: $space-md $space-lg;
+  height: 72px;
   border-bottom: 1px solid $color-border;
   flex-shrink: 0;
 }
@@ -23,13 +23,13 @@
 .me {
   display: flex;
   align-items: center;
-  gap: $space-sm;
+  gap: $space-md;
   min-width: 0;
 }
 
 .meName {
   font-weight: 600;
-  font-size: 14px;
+  font-size: 16px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -38,16 +38,17 @@
 .list {
   flex: 1;
   overflow-y: auto;
+  padding: $space-sm;
 }
 
 .centered {
   display: flex;
   justify-content: center;
-  padding: $space-lg;
+  padding: $space-xl;
 }
 
 .msg {
-  padding: $space-lg;
+  padding: $space-xl;
   color: $color-text-secondary;
   text-align: center;
 }

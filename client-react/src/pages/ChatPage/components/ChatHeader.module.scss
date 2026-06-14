@@ -4,24 +4,30 @@
   display: flex;
   align-items: center;
   gap: $space-md;
-  padding: $space-sm $space-lg;
-  height: 64px;
+  padding: $space-md $space-lg;
+  height: 72px;
   border-bottom: 1px solid $color-border;
-  background: #fff;
+  background: $color-chat-sidebar;
   flex-shrink: 0;
+  z-index: 1;
 }
 
 .info {
   display: flex;
   flex-direction: column;
+  gap: 2px;
 }
 
 .name {
   font-weight: 600;
-  font-size: 15px;
+  font-size: 16px;
 }
 
 .status {
-  font-size: 12px;
+  font-size: 13px;
   color: $color-text-secondary;
+
+  &.online {
+    color: $color-chat-accent;
+  }
 }

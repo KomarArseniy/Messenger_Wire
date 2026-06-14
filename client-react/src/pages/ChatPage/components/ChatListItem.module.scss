@@ -5,23 +5,38 @@
   align-items: center;
   gap: $space-md;
   width: 100%;
-  padding: 10px $space-md;
+  padding: 12px 14px;
   border: none;
   background: transparent;
+  border-radius: 12px;
   cursor: pointer;
   text-align: left;
   transition: background $transition-fast;
 
   &:hover {
-    background: $color-bg-secondary;
+    background: $color-chat-hover;
   }
 }
 
 .active {
-  background: $color-auth-bg-to;
+  background: $color-chat-active;
 
   &:hover {
-    background: $color-auth-bg-to;
+    background: $color-chat-active;
+  }
+
+  .name,
+  .last {
+    color: #fff;
+  }
+
+  .badge {
+    background: #fff;
+    color: $color-chat-accent;
+  }
+
+  .onlineDot {
+    border-color: $color-chat-active;
   }
 }
 
@@ -32,32 +47,33 @@
 
 .onlineDot {
   position: absolute;
-  right: 0;
-  bottom: 0;
-  width: 12px;
-  height: 12px;
+  right: -1px;
+  bottom: -1px;
+  width: 14px;
+  height: 14px;
   border-radius: 50%;
   background: $color-online;
-  border: 2px solid #fff;
+  border: 2.5px solid #fff;
 }
 
 .body {
   display: flex;
   flex-direction: column;
+  gap: 2px;
   min-width: 0;
   flex: 1;
 }
 
 .name {
   font-weight: 600;
-  font-size: 14px;
+  font-size: 15px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 .last {
-  font-size: 13px;
+  font-size: 14px;
   color: $color-text-secondary;
   white-space: nowrap;
   overflow: hidden;
@@ -66,15 +82,15 @@
 
 .badge {
   flex-shrink: 0;
-  min-width: 20px;
-  height: 20px;
-  padding: 0 6px;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 7px;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: $radius-full;
-  background: $color-auth-accent;
+  background: $color-chat-accent;
   color: #fff;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 600;
 }

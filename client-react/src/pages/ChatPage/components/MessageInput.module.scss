@@ -2,26 +2,30 @@
 
 .form {
   display: flex;
-  gap: $space-sm;
+  gap: $space-md;
   padding: $space-md $space-lg;
+  background: $color-chat-sidebar;
   border-top: 1px solid $color-border;
-  background: #fff;
 }
 
 .input {
   flex: 1;
-  height: 42px;
-  padding: 0 $space-md;
-  border: 1px solid $color-border;
+  height: 48px;
+  padding: 0 $space-lg;
+  border: 1px solid transparent;
   border-radius: $radius-full;
-  background: $color-bg-secondary;
-  font-size: 14px;
+  background: $color-chat-hover;
+  font-size: 15px;
   transition: all $transition-fast;
+
+  &::placeholder {
+    color: $color-text-muted;
+  }
 
   &:focus {
     outline: none;
     background: #fff;
-    border-color: $color-auth-accent;
+    border-color: $color-chat-accent;
   }
 }
 
@@ -29,18 +33,19 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 42px;
-  height: 42px;
+  width: 48px;
+  height: 48px;
   border: none;
   border-radius: 50%;
-  background: $color-auth-accent;
+  background: $color-chat-accent;
   color: #fff;
   cursor: pointer;
   flex-shrink: 0;
   transition: all $transition-fast;
 
   &:hover:not(:disabled) {
-    background: $color-auth-accent-hover;
+    background: $color-chat-accent-hover;
+    transform: scale(1.05);
   }
 
   &:disabled {
