@@ -1,11 +1,11 @@
-import { useLottie } from 'lottie-react'
-import styles from './EmptyState.module.scss'
+import { useLottie } from 'lottie-react';
+import styles from './EmptyState.module.scss';
 
 interface EmptyStateProps {
-  animation: object
-  title?: string
-  subtitle?: string
-  size?: number
+  animation: object;
+  title?: string;
+  subtitle?: string;
+  size?: number;
 }
 
 export function EmptyState({
@@ -18,7 +18,7 @@ export function EmptyState({
     animationData: animation,
     loop: true,
     autoplay: true,
-  })
+  });
 
   return (
     <div className={styles.wrapper}>
@@ -26,5 +26,5 @@ export function EmptyState({
       {title && <p className={styles.title}>{title}</p>}
       {subtitle && <p className={styles.subtitle}>{subtitle}</p>}
     </div>
-  )
+  );
 }

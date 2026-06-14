@@ -1,9 +1,9 @@
-import { Avatar } from '@/components'
-import type { Chat } from '@/types/chat'
-import styles from './ChatHeader.module.scss'
+import { Avatar } from '@/components';
+import type { Chat } from '@/types/chat';
+import styles from './ChatHeader.module.scss';
 
 interface ChatHeaderProps {
-  chat: Chat
+  chat: Chat;
 }
 
 export function ChatHeader({ chat }: ChatHeaderProps) {
@@ -19,5 +19,5 @@ export function ChatHeader({ chat }: ChatHeaderProps) {
         </span>
       </div>
     </header>
-  )
+  );
 }

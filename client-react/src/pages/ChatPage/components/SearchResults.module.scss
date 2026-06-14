@@ -1,0 +1,71 @@
+@use 'variables' as *;
+
+.section {
+  margin-bottom: $space-sm;
+}
+
+.sectionTitle {
+  padding: $space-sm 14px 4px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: $color-text-muted;
+}
+
+.centered {
+  display: flex;
+  justify-content: center;
+  padding: $space-lg;
+}
+
+.msg {
+  padding: $space-lg;
+  color: $color-text-secondary;
+  text-align: center;
+  font-size: 14px;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: $space-md;
+  width: 100%;
+  padding: 12px 14px;
+  border: none;
+  background: transparent;
+  border-radius: 12px;
+  cursor: pointer;
+  text-align: left;
+  transition: background $transition-fast;
+
+  &:hover:not(:disabled) {
+    background: $color-chat-hover;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: default;
+  }
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  flex: 1;
+}
+
+.name {
+  font-weight: 600;
+  font-size: 15px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.username {
+  font-size: 13px;
+  color: $color-chat-accent;
+}

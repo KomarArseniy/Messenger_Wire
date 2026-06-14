@@ -8,10 +8,13 @@ import { useMessages } from '@/hooks/useMessages';
 import { useSendMessage } from '@/hooks/useSendMessage';
 import { useSocketConnection } from '@/hooks/useSocketConnection';
 import { useIncomingMessages } from '@/hooks/useIncomingMessages';
+import { useUserSearch } from '@/hooks/useUserSearch';
+import { useCreatePrivateChat } from '@/hooks/useCreatePrivateChat';
 import { joinRoom, disconnectSocket, markRead } from '@/lib/socket';
 import { queryClient } from '@/lib/queryClient';
 import { ChatList, ChatHeader, MessageList, MessageInput } from './components';
 import noChosenChatAnim from '@/assets/lottie/no-chosen-chat.json';
+import type { SearchedUser } from '@/types/search';
 import styles from './ChatPage.module.scss';
 
 export function ChatPage() {
@@ -22,6 +25,20 @@ export function ChatPage() {
   const activeChatId = useUiStore((s) => s.activeChatId);
   const setActiveChatId = useUiStore((s) => s.setActiveChatId);
   const [search, setSearch] = useState('');
+  const { result: searchResult, status: searchStatus } = useUserSearch(search);
+  const createChat = useCreatePrivateChat();
+
+  async function handleSelectUser(user: SearchedUser) {
+    try {
+      const res = await createChat.mutateAsync(user.id);
+      if (res.chatId) {
+        setActiveChatId(res.chatId);
+        setSearch('');
+      }
+    } catch {
+      // ошибка создания чата — оставляем поиск открытым
+    }
+  }
 
   const isConnected = useSocketConnection(accessToken);
   useIncomingMessages(isConnected, activeChatId, user?.id);
@@ -35,6 +52,12 @@ export function ChatPage() {
   } = useMessages(activeChatId);
 
   const activeChat = chats?.find((c) => c.id === activeChatId) ?? null;
+
+  const matchedChats = (() => {
+    const q = search.trim().toLowerCase();
+    if (!q || !chats) return [];
+    return chats.filter((c) => (c.name ?? '').toLowerCase().includes(q));
+  })();
 
   useEffect(() => {
     if (activeChatId !== null && user) {
@@ -65,6 +88,11 @@ export function ChatPage() {
         onCreateGroup={() => {}}
         onSelect={setActiveChatId}
         onLogout={handleLogout}
+        matchedChats={matchedChats}
+        searchResult={searchResult}
+        searchStatus={searchStatus}
+        onSelectUser={handleSelectUser}
+        isCreatingChat={createChat.isPending}
       />
 
       <main className={styles.main}>

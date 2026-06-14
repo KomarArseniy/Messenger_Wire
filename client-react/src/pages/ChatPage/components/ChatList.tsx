@@ -2,8 +2,10 @@ import { Spinner } from '@/components';
 import { EmptyState } from '@/components/EmptyState';
 import { SearchIcon, GroupIcon, LogoutIcon } from '@/components/icons';
 import { ChatListItem } from './ChatListItem';
+import { SearchResults } from './SearchResults';
 import noChatsAnim from '@/assets/lottie/no-chosen-chat.json';
 import type { Chat } from '@/types/chat';
+import type { SearchedUser } from '@/types/search';
 import styles from './ChatList.module.scss';
 
 interface ChatListProps {
@@ -16,6 +18,11 @@ interface ChatListProps {
   onCreateGroup: () => void;
   onSelect: (chatId: number) => void;
   onLogout: () => void;
+  matchedChats: Chat[];
+  searchResult: SearchedUser | null;
+  searchStatus: 'idle' | 'loading' | 'notFound' | 'done';
+  onSelectUser: (user: SearchedUser) => void;
+  isCreatingChat: boolean;
 }
 
 export function ChatList({
@@ -28,7 +35,14 @@ export function ChatList({
   onCreateGroup,
   onSelect,
   onLogout,
+  matchedChats,
+  searchResult,
+  searchStatus,
+  onSelectUser,
+  isCreatingChat,
 }: ChatListProps) {
+  const isSearching = search.trim().length > 0;
+
   return (
     <aside className={styles.sidebar}>
       <header className={styles.header}>
@@ -52,30 +66,44 @@ export function ChatList({
       </header>
 
       <div className={styles.list}>
-        {isLoading && (
-          <div className={styles.centered}>
-            <Spinner />
-          </div>
-        )}
-        {isError && <p className={styles.msg}>Не удалось загрузить чаты</p>}
-        {!isLoading && !isError && chats && chats.length === 0 && (
-          <EmptyState
-            animation={noChatsAnim}
-            title="Чатов пока нет"
-            subtitle="Найдите пользователя, чтобы начать общение"
-            size={160}
+        {isSearching ? (
+          <SearchResults
+            matchedChats={matchedChats}
+            activeChatId={activeChatId}
+            onSelectChat={onSelect}
+            result={searchResult}
+            status={searchStatus}
+            onSelectUser={onSelectUser}
+            isCreating={isCreatingChat}
           />
+        ) : (
+          <>
+            {isLoading && (
+              <div className={styles.centered}>
+                <Spinner />
+              </div>
+            )}
+            {isError && <p className={styles.msg}>Не удалось загрузить чаты</p>}
+            {!isLoading && !isError && chats && chats.length === 0 && (
+              <EmptyState
+                animation={noChatsAnim}
+                title="Чатов пока нет"
+                subtitle="Найдите пользователя, чтобы начать общение"
+                size={160}
+              />
+            )}
+            {!isError &&
+              chats &&
+              chats.map((chat) => (
+                <ChatListItem
+                  key={chat.id}
+                  chat={chat}
+                  isActive={activeChatId === chat.id}
+                  onClick={() => onSelect(chat.id)}
+                />
+              ))}
+          </>
         )}
-        {!isError &&
-          chats &&
-          chats.map((chat) => (
-            <ChatListItem
-              key={chat.id}
-              chat={chat}
-              isActive={activeChatId === chat.id}
-              onClick={() => onSelect(chat.id)}
-            />
-          ))}
       </div>
 
       <footer className={styles.footer}>
