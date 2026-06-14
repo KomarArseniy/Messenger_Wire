@@ -6,6 +6,8 @@
   padding: $space-md $space-lg;
   background: $color-chat-sidebar;
   border-top: 1px solid $color-border;
+  position: relative;
+  z-index: 1;
 }
 
 .input {

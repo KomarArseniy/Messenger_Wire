@@ -1,9 +1,9 @@
-import { Avatar, Button, Spinner } from '@/components';
+import { Spinner } from '@/components';
 import { EmptyState } from '@/components/EmptyState';
+import { SearchIcon, GroupIcon, LogoutIcon } from '@/components/icons';
 import { ChatListItem } from './ChatListItem';
 import noChatsAnim from '@/assets/lottie/no-chosen-chat.json';
 import type { Chat } from '@/types/chat';
-import type { User } from '@/types/user';
 import styles from './ChatList.module.scss';
 
 interface ChatListProps {
@@ -11,7 +11,9 @@ interface ChatListProps {
   isLoading: boolean;
   isError: boolean;
   activeChatId: number | null;
-  user: User | null;
+  search: string;
+  onSearchChange: (value: string) => void;
+  onCreateGroup: () => void;
   onSelect: (chatId: number) => void;
   onLogout: () => void;
 }
@@ -21,26 +23,32 @@ export function ChatList({
   isLoading,
   isError,
   activeChatId,
-  user,
+  search,
+  onSearchChange,
+  onCreateGroup,
   onSelect,
   onLogout,
 }: ChatListProps) {
   return (
     <aside className={styles.sidebar}>
       <header className={styles.header}>
-        <div className={styles.me}>
-          <Avatar
-            name={user?.full_name ?? user?.username ?? user?.login ?? null}
-            src={user?.avatar_url}
-            size="sm"
+        <div className={styles.searchBox}>
+          <SearchIcon className={styles.searchIcon} width={18} height={18} />
+          <input
+            className={styles.searchInput}
+            value={search}
+            onChange={(e) => onSearchChange(e.target.value)}
+            placeholder="Поиск пользователей…"
           />
-          <span className={styles.meName}>
-            {user?.username ?? user?.login ?? 'пользователь'}
-          </span>
         </div>
-        <Button variant="ghost" size="sm" onClick={onLogout}>
-          Выйти
-        </Button>
+        <button
+          className={styles.iconBtn}
+          onClick={onCreateGroup}
+          aria-label="Создать групповой чат"
+          title="Создать групповой чат"
+        >
+          <GroupIcon width={20} height={20} />
+        </button>
       </header>
 
       <div className={styles.list}>
@@ -69,6 +77,13 @@ export function ChatList({
             />
           ))}
       </div>
+
+      <footer className={styles.footer}>
+        <button className={styles.logoutBtn} onClick={onLogout}>
+          <LogoutIcon width={18} height={18} />
+          <span>Выйти</span>
+        </button>
+      </footer>
     </aside>
   );
 }

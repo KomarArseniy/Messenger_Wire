@@ -29,13 +29,13 @@
 }
 
 .mine .bubble {
-  background: $color-chat-bubble-out;
+  background: linear-gradient(135deg, #d4f5b8 0%, #eeffe0 60%, #f5ffea 100%);
   color: $color-text;
   border-bottom-right-radius: 5px;
 }
 
 .theirs .bubble {
-  background: $color-chat-bubble-in;
+  background: #ffffff;
   color: $color-text;
   border-bottom-left-radius: 5px;
 }

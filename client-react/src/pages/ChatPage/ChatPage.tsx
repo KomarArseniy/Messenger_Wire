@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { EmptyState } from '@/components/EmptyState';
 import { useSessionStore } from '@/store/sessionStore';
 import { useUiStore } from '@/store/uiStore';
@@ -21,6 +21,7 @@ export function ChatPage() {
   const clearSession = useSessionStore((s) => s.clearSession);
   const activeChatId = useUiStore((s) => s.activeChatId);
   const setActiveChatId = useUiStore((s) => s.setActiveChatId);
+  const [search, setSearch] = useState('');
 
   const isConnected = useSocketConnection(accessToken);
   useIncomingMessages(isConnected, activeChatId, user?.id);
@@ -59,7 +60,9 @@ export function ChatPage() {
         isLoading={isLoading}
         isError={isError}
         activeChatId={activeChatId}
-        user={user}
+        search={search}
+        onSearchChange={setSearch}
+        onCreateGroup={() => {}}
         onSelect={setActiveChatId}
         onLogout={handleLogout}
       />
