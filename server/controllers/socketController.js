@@ -4,20 +4,59 @@ import { createUnreadMessage } from "./chatControllers.js";
 import { createUserChat } from "./chatControllers.js";
 import { getUserByID } from "../models/authModel.js";
 import ChatModel from "../models/chatModel.js";
+import { TokenService } from "../services/TokenService.js";
+
+const tokenService = new TokenService();
 
 export function configureSockets(io) {
     let users = {}
     let userCache = new Map();
 
-    io.on('connection', socket => {
+    // Миддлваре: проверяем JWT при подключении сокета
+    io.use((socket, next) => {
+        const token = socket.handshake.auth?.token;
+        if (!token) {
+            return next(new Error('unauthorized'));
+        }
+        try {
+            const payload = tokenService.verifyAccessToken(token);
+            socket.userId = payload.id;
+            next();
+        } catch {
+            next(new Error('unauthorized'));
+        }
+    });
 
-        socket.on('authenticate', (userId) => {
-            users[userId] = socket.id
-        })
+    io.on('connection', socket => {
+        users[socket.userId] = socket.id;
+
+        // Отмечаем онлайн и уведомляем собеседников
+        (async () => {
+            try {
+                const chatIds = await ChatModel.getUserChatIds(socket.userId);
+                for (const chatId of chatIds) {
+                    socket.join(chatId);
+                }
+
+                await ChatModel.setUserOnline(socket.userId, true);
+                const partnerIds = await ChatModel.getChatPartnerIds(socket.userId);
+                for (const partnerId of partnerIds) {
+                    const partnerSocketId = users[partnerId];
+                    if (partnerSocketId) {
+                        io.to(partnerSocketId).emit('presence', {
+                            userId: socket.userId,
+                            isOnline: true,
+                        });
+                    }
+                }
+            } catch (error) {
+                console.error('Ошибка установки онлайн-статуса:', error);
+            }
+        })();
 
         socket.on('join_room', async (room, callback) => {
             socket.join(room);
-            callback(room);
+            if (typeof callback === 'function') callback(room);
         })
 
         socket.on("chat_history", async (room, callback) => {
@@ -34,7 +73,8 @@ export function configureSockets(io) {
 
         // Обработка отправки сообщений
         socket.on("send_message", async (data, callback) => {
-            const { sender_id, chatId, isGroupChat, content, created_at } = data;
+            const { chatId, isGroupChat, content, created_at } = data;
+            const sender_id = socket.userId;
             try {
                 let full_name = null;
                 let avatar_url = null;
@@ -109,7 +149,8 @@ export function configureSockets(io) {
         })
 
         socket.on('mark_read', async (data, callback) => {
-            const { chatId, readerId } = data;
+            const { chatId } = data;
+            const readerId = socket.userId;
             try {
                 const messageIds = await ChatModel.markChatMessagesRead(chatId, readerId);
                 socket.to(chatId).emit('messages_read', { chatId, messageIds });
@@ -124,9 +165,25 @@ export function configureSockets(io) {
             }
         })
 
-        socket.on("disconnect", () => {
+        socket.on("disconnect", async () => {
             for (const [userId, socketId] of Object.entries(users)) {
                 if (socketId === socket.id) delete users[userId];
+            }
+
+            try {
+                await ChatModel.setUserOnline(socket.userId, false);
+                const partnerIds = await ChatModel.getChatPartnerIds(socket.userId);
+                for (const partnerId of partnerIds) {
+                    const partnerSocketId = users[partnerId];
+                    if (partnerSocketId) {
+                        io.to(partnerSocketId).emit('presence', {
+                            userId: socket.userId,
+                            isOnline: false,
+                        });
+                    }
+                }
+            } catch (error) {
+                console.error('Ошибка сброса онлайн-статуса:', error);
             }
         });
 

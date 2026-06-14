@@ -88,6 +88,32 @@ export default class ChatModel {
         return rows.map((r) => r.user_id);
     }
 
+    static async setUserOnline(userId, isOnline, client = db) {
+        await client.query(
+            `UPDATE users SET is_online = $2, last_seen_at = NOW() WHERE id = $1`,
+            [userId, isOnline]
+        );
+    }
+
+    static async getChatPartnerIds(userId, client = db) {
+        const { rows } = await client.query(
+            `SELECT DISTINCT cm2.user_id
+             FROM chat_members cm1
+             JOIN chat_members cm2 ON cm1.chat_id = cm2.chat_id
+             WHERE cm1.user_id = $1 AND cm2.user_id != $1`,
+            [userId]
+        );
+        return rows.map((r) => r.user_id);
+    }
+
+    static async getUserChatIds(userId, client = db) {
+        const { rows } = await client.query(
+            `SELECT chat_id FROM chat_members WHERE user_id = $1`,
+            [userId]
+        );
+        return rows.map((r) => r.chat_id);
+    }
+
     static async getChats(userId) {
         try {
             const query = `
