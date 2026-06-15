@@ -1,6 +1,5 @@
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { EmptyState } from '@/components/EmptyState';
 import { useSessionStore } from '@/store/sessionStore';
 import { useUiStore } from '@/store/uiStore';
 import { useChats } from '@/hooks/useChats';
@@ -10,7 +9,7 @@ import { useSocketConnection } from '@/hooks/useSocketConnection';
 import { useIncomingMessages } from '@/hooks/useIncomingMessages';
 import { useUserSearch } from '@/hooks/useUserSearch';
 import { useCreatePrivateChat } from '@/hooks/useCreatePrivateChat';
-import { joinRoom, disconnectSocket, markRead } from '@/lib/socket';
+import { joinRoom, disconnectSocket, markRead, joinChat } from '@/lib/socket';
 import { queryClient } from '@/lib/queryClient';
 import {
   ChatList,
@@ -19,7 +18,6 @@ import {
   MessageInput,
   ProfileModal,
 } from './components';
-import helloAnim from '@/assets/lottie/hello.json';
 import type { SearchedUser } from '@/types/search';
 import styles from './ChatPage.module.scss';
 
@@ -39,6 +37,7 @@ export function ChatPage() {
     try {
       const res = await createChat.mutateAsync(user.id);
       if (res.chatId) {
+        joinChat(res.chatId);
         setActiveChatId(res.chatId);
         setSearch('');
       }
@@ -105,14 +104,6 @@ export function ChatPage() {
 
       <main className={styles.main}>
         {activeChat === null ? (
-          // <div className={styles.emptyWrap}>
-          //   <EmptyState
-          //     animation={helloAnim}
-          //     title="Выберите чат"
-          //     subtitle="Откройте диалог слева, чтобы начать общение"
-          //     titleColor="#000000"
-          //   />
-          // </div>
             <div className={styles.watermark} aria-hidden="true">
               WIRE
             </div>

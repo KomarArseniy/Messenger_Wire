@@ -24,7 +24,7 @@ export function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
   const accessToken = useSessionStore((s) => s.accessToken);
 
   const initial: Record<string, string> = {
-    username: user?.username ?? '',
+    username: user?.username ? `@${user.username.replace(/^@/, '')}` : '',
     fullname: user?.full_name ?? '',
     about: user?.about ?? '',
   };
@@ -35,8 +35,11 @@ export function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
   const [saved, setSaved] = useState<Record<string, boolean>>({});
 
   async function handleSave(field: ProfileField, storeKey: keyof User) {
-    const value = values[field]?.trim();
-    if (!value || !user || !accessToken) return;
+    const raw = values[field]?.trim();
+    if (!raw || !user || !accessToken) return;
+
+    const value = field === 'username' ? raw.replace(/^@+/, '') : raw;
+    if (!value) return;
 
     setSavingKey(field);
     setErrors((e) => ({ ...e, [field]: '' }));
@@ -63,7 +66,7 @@ export function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
           src={user?.avatar_url}
           size="lg"
         />
-        <span className={styles.login}>@{user?.login}</span>
+        <span className={styles.login}>@{user?.username ?? user?.login}</span>
       </div>
 
       <div className={styles.fields}>
@@ -77,7 +80,13 @@ export function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
                   className={styles.input}
                   value={values[key]}
                   onChange={(e) => {
-                    setValues((v) => ({ ...v, [key]: e.target.value }));
+                    const raw = e.target.value;
+                    const next =
+                      key === 'username'
+                        ? '@' +
+                          raw.replace(/^@+/, '').replace(/[^a-zA-Z0-9_]/g, '')
+                        : raw;
+                    setValues((v) => ({ ...v, [key]: next }));
                     setSaved((s) => ({ ...s, [key]: false }));
                   }}
                   placeholder={label}

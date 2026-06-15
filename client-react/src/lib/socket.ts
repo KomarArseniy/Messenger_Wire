@@ -40,6 +40,10 @@ export function joinRoom(chatId: number) {
   });
 }
 
+export function joinChat(chatId: number) {
+  socket?.emit('join_chat', chatId);
+}
+
 export function sendMessage(payload: SendMessagePayload, timeoutMs = 10000) {
   return new Promise<SendMessageAck>((resolve, reject) => {
     if (!socket) return reject(new Error('no socket'));
