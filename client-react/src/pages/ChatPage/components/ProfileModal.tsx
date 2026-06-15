@@ -23,11 +23,13 @@ export function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
   const setSession = useSessionStore((s) => s.setSession);
   const accessToken = useSessionStore((s) => s.accessToken);
 
-  const [values, setValues] = useState<Record<string, string>>({
+  const initial: Record<string, string> = {
     username: user?.username ?? '',
     fullname: user?.full_name ?? '',
     about: user?.about ?? '',
-  });
+  };
+
+  const [values, setValues] = useState<Record<string, string>>(initial);
   const [savingKey, setSavingKey] = useState<string | null>(null);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [saved, setSaved] = useState<Record<string, boolean>>({});
@@ -38,7 +40,6 @@ export function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
 
     setSavingKey(field);
     setErrors((e) => ({ ...e, [field]: '' }));
-    setSaved((s) => ({ ...s, [field]: false }));
     try {
       await updateProfileField(field, value);
       setSession(accessToken, { ...user, [storeKey]: value });
@@ -66,31 +67,41 @@ export function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
       </div>
 
       <div className={styles.fields}>
-        {FIELDS.map(({ key, label, storeKey }) => (
-          <div key={key} className={styles.field}>
-            <label className={styles.label}>{label}</label>
-            <div className={styles.row}>
-              <input
-                className={styles.input}
-                value={values[key]}
-                onChange={(e) => {
-                  setValues((v) => ({ ...v, [key]: e.target.value }));
-                  setSaved((s) => ({ ...s, [key]: false }));
-                }}
-                placeholder={label}
-              />
-              <Button
-                size="sm"
-                onClick={() => handleSave(key, storeKey)}
-                isLoading={savingKey === key}
-                disabled={!values[key]?.trim()}
-              >
-                {saved[key] ? '✓' : 'Сохранить'}
-              </Button>
+        {FIELDS.map(({ key, label, storeKey }) => {
+          const changed = values[key].trim() !== (initial[key] ?? '').trim();
+          return (
+            <div key={key} className={styles.field}>
+              <label className={styles.label}>{label}</label>
+              <div className={styles.row}>
+                <input
+                  className={styles.input}
+                  value={values[key]}
+                  onChange={(e) => {
+                    setValues((v) => ({ ...v, [key]: e.target.value }));
+                    setSaved((s) => ({ ...s, [key]: false }));
+                  }}
+                  placeholder={label}
+                />
+                {changed && (
+                  <Button
+                    size="sm"
+                    onClick={() => handleSave(key, storeKey)}
+                    isLoading={savingKey === key}
+                    disabled={!values[key]?.trim()}
+                  >
+                    Сохранить
+                  </Button>
+                )}
+              </div>
+              {saved[key] && !changed && (
+                <span className={styles.savedNote}>Сохранено</span>
+              )}
+              {errors[key] && (
+                <span className={styles.error}>{errors[key]}</span>
+              )}
             </div>
-            {errors[key] && <span className={styles.error}>{errors[key]}</span>}
-          </div>
-        ))}
+          );
+        })}
       </div>
     </Modal>
   );

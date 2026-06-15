@@ -25,10 +25,10 @@
   span {
     padding: 5px 14px;
     border-radius: $radius-full;
-    background: rgba(0, 0, 0, 0.16);
+    background: rgba(0, 0, 0, 0.3);
     color: #fff;
-    font-size: 12px;
-    font-weight: 600;
-    backdrop-filter: blur(4px);
+    font-size: 14px;
+    font-weight: 400;
+    backdrop-filter: blur(15px);
   }
 }

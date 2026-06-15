@@ -105,14 +105,17 @@ export function ChatPage() {
 
       <main className={styles.main}>
         {activeChat === null ? (
-          <div className={styles.emptyWrap}>
-            <EmptyState
-              animation={helloAnim}
-              title="Выберите чат"
-              subtitle="Откройте диалог слева, чтобы начать общение"
-              titleColor="#000000"
-            />
-          </div>
+          // <div className={styles.emptyWrap}>
+          //   <EmptyState
+          //     animation={helloAnim}
+          //     title="Выберите чат"
+          //     subtitle="Откройте диалог слева, чтобы начать общение"
+          //     titleColor="#000000"
+          //   />
+          // </div>
+            <div className={styles.watermark} aria-hidden="true">
+              WIRE
+            </div>
         ) : (
           <>
             <ChatHeader chat={activeChat} />
