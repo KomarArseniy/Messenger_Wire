@@ -1,6 +1,11 @@
 import { Spinner } from '@/components';
 import { EmptyState } from '@/components/EmptyState';
-import { SearchIcon, GroupIcon, LogoutIcon } from '@/components/icons';
+import {
+  SearchIcon,
+  GroupIcon,
+  LogoutIcon,
+  UserIcon,
+} from '@/components/icons';
 import { ChatListItem } from './ChatListItem';
 import { SearchResults } from './SearchResults';
 import noChatsAnim from '@/assets/lottie/no-chosen-chat.json';
@@ -23,6 +28,7 @@ interface ChatListProps {
   searchStatus: 'idle' | 'loading' | 'notFound' | 'done';
   onSelectUser: (user: SearchedUser) => void;
   isCreatingChat: boolean;
+  onOpenProfile: () => void;
 }
 
 export function ChatList({
@@ -40,6 +46,7 @@ export function ChatList({
   searchStatus,
   onSelectUser,
   isCreatingChat,
+  onOpenProfile,
 }: ChatListProps) {
   const isSearching = search.trim().length > 0;
 
@@ -108,6 +115,10 @@ export function ChatList({
       </div>
 
       <footer className={styles.footer}>
+        <button className={styles.profileBtn} onClick={onOpenProfile}>
+          <UserIcon width={18} height={18} />
+          <span>Профиль</span>
+        </button>
         <button className={styles.logoutBtn} onClick={onLogout}>
           <LogoutIcon width={18} height={18} />
           <span>Выйти</span>

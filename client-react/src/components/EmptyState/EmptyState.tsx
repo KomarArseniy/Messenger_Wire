@@ -26,11 +26,21 @@ export function EmptyState({
     <div className={styles.wrapper}>
       <div style={{ width: size, height: size }}>{View}</div>
       {title && (
-        <p className={styles.title} style={titleColor ? { color: titleColor } : undefined}>
+        <p
+          className={styles.title}
+          style={titleColor ? { color: titleColor } : undefined}
+        >
           {title}
         </p>
       )}
-      {subtitle && <p className={styles.subtitle} style={titleColor ? { color: titleColor } : undefined}>{subtitle}</p>}
+      {subtitle && (
+        <p
+          className={styles.subtitle}
+          style={titleColor ? { color: titleColor } : undefined}
+        >
+          {subtitle}
+        </p>
+      )}
     </div>
   );
 }

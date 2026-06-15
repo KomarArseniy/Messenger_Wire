@@ -1,20 +1,20 @@
-import { Avatar, Spinner } from '@/components'
-import { EmptyState } from '@/components/EmptyState'
-import { ChatListItem } from './ChatListItem'
-import noResultsAnim from '@/assets/lottie/no-results.json'
-import type { SearchedUser } from '@/types/search'
-import type { Chat } from '@/types/chat'
-import styles from './SearchResults.module.scss'
+import { Avatar, Spinner } from '@/components';
+import { EmptyState } from '@/components/EmptyState';
+import { ChatListItem } from './ChatListItem';
+import noResultsAnim from '@/assets/lottie/no-results.json';
+import type { SearchedUser } from '@/types/search';
+import type { Chat } from '@/types/chat';
+import styles from './SearchResults.module.scss';
 
 interface SearchResultsProps {
-  matchedChats: Chat[]
-  activeChatId: number | null
-  onSelectChat: (chatId: number) => void
-  result: SearchedUser | null
-  status: 'idle' | 'loading' | 'notFound' | 'done'
-  onSelectUser: (user: SearchedUser) => void
-  isCreating: boolean
-  query: string
+  matchedChats: Chat[];
+  activeChatId: number | null;
+  onSelectChat: (chatId: number) => void;
+  result: SearchedUser | null;
+  status: 'idle' | 'loading' | 'notFound' | 'done';
+  onSelectUser: (user: SearchedUser) => void;
+  isCreating: boolean;
+  query: string;
 }
 
 export function SearchResults({
@@ -27,10 +27,10 @@ export function SearchResults({
   isCreating,
   query,
 }: SearchResultsProps) {
-  const hasChats = matchedChats.length > 0
-  const hasUser = status === 'done' && result !== null
-  const loading = status === 'loading'
-  const nothing = !hasChats && !hasUser && !loading
+  const hasChats = matchedChats.length > 0;
+  const hasUser = status === 'done' && result !== null;
+  const loading = status === 'loading';
+  const nothing = !hasChats && !hasUser && !loading;
 
   return (
     <div>
@@ -88,5 +88,5 @@ export function SearchResults({
         />
       )}
     </div>
-  )
+  );
 }

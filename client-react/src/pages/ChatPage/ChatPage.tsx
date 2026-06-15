@@ -12,7 +12,13 @@ import { useUserSearch } from '@/hooks/useUserSearch';
 import { useCreatePrivateChat } from '@/hooks/useCreatePrivateChat';
 import { joinRoom, disconnectSocket, markRead } from '@/lib/socket';
 import { queryClient } from '@/lib/queryClient';
-import { ChatList, ChatHeader, MessageList, MessageInput } from './components';
+import {
+  ChatList,
+  ChatHeader,
+  MessageList,
+  MessageInput,
+  ProfileModal,
+} from './components';
 import helloAnim from '@/assets/lottie/hello.json';
 import type { SearchedUser } from '@/types/search';
 import styles from './ChatPage.module.scss';
@@ -25,6 +31,7 @@ export function ChatPage() {
   const activeChatId = useUiStore((s) => s.activeChatId);
   const setActiveChatId = useUiStore((s) => s.setActiveChatId);
   const [search, setSearch] = useState('');
+  const [profileOpen, setProfileOpen] = useState(false);
   const { result: searchResult, status: searchStatus } = useUserSearch(search);
   const createChat = useCreatePrivateChat();
 
@@ -93,6 +100,7 @@ export function ChatPage() {
         searchStatus={searchStatus}
         onSelectUser={handleSelectUser}
         isCreatingChat={createChat.isPending}
+        onOpenProfile={() => setProfileOpen(true)}
       />
 
       <main className={styles.main}>
@@ -120,6 +128,11 @@ export function ChatPage() {
           </>
         )}
       </main>
+
+      <ProfileModal
+        isOpen={profileOpen}
+        onClose={() => setProfileOpen(false)}
+      />
     </div>
   );
 }
