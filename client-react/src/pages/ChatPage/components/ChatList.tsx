@@ -75,6 +75,7 @@ export function ChatList({
             status={searchStatus}
             onSelectUser={onSelectUser}
             isCreating={isCreatingChat}
+            query={search}
           />
         ) : (
           <>

@@ -29,7 +29,8 @@
 }
 
 .mine .bubble {
-  background: linear-gradient(135deg, #d4f5b8 0%, #eeffe0 60%, #f5ffea 100%);
+  //background: linear-gradient(135deg, #d4f5b8 0%, #eeffe0 100%, #f5ffea 100%);
+  background: linear-gradient(135deg, #d3f3b3 0%, #d9fabc 100%);
   color: $color-text;
   border-bottom-right-radius: 5px;
 }

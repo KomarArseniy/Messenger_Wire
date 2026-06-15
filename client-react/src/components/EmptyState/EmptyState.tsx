@@ -6,6 +6,7 @@ interface EmptyStateProps {
   title?: string;
   subtitle?: string;
   size?: number;
+  titleColor?: string;
 }
 
 export function EmptyState({
@@ -13,6 +14,7 @@ export function EmptyState({
   title,
   subtitle,
   size = 200,
+  titleColor,
 }: EmptyStateProps) {
   const { View } = useLottie({
     animationData: animation,
@@ -23,8 +25,12 @@ export function EmptyState({
   return (
     <div className={styles.wrapper}>
       <div style={{ width: size, height: size }}>{View}</div>
-      {title && <p className={styles.title}>{title}</p>}
-      {subtitle && <p className={styles.subtitle}>{subtitle}</p>}
+      {title && (
+        <p className={styles.title} style={titleColor ? { color: titleColor } : undefined}>
+          {title}
+        </p>
+      )}
+      {subtitle && <p className={styles.subtitle} style={titleColor ? { color: titleColor } : undefined}>{subtitle}</p>}
     </div>
   );
 }

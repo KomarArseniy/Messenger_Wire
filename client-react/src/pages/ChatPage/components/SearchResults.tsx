@@ -14,6 +14,7 @@ interface SearchResultsProps {
   status: 'idle' | 'loading' | 'notFound' | 'done'
   onSelectUser: (user: SearchedUser) => void
   isCreating: boolean
+  query: string
 }
 
 export function SearchResults({
@@ -24,6 +25,7 @@ export function SearchResults({
   status,
   onSelectUser,
   isCreating,
+  query,
 }: SearchResultsProps) {
   const hasChats = matchedChats.length > 0
   const hasUser = status === 'done' && result !== null
@@ -80,8 +82,8 @@ export function SearchResults({
       {nothing && (
         <EmptyState
           animation={noResultsAnim}
-          title="Ничего не найдено"
-          subtitle="Попробуйте другой запрос"
+          title="Нет результатов"
+          subtitle={`Сообщения с "${query.trim()}" не найдены`}
           size={160}
         />
       )}

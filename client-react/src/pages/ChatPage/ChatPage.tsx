@@ -13,7 +13,7 @@ import { useCreatePrivateChat } from '@/hooks/useCreatePrivateChat';
 import { joinRoom, disconnectSocket, markRead } from '@/lib/socket';
 import { queryClient } from '@/lib/queryClient';
 import { ChatList, ChatHeader, MessageList, MessageInput } from './components';
-import noChosenChatAnim from '@/assets/lottie/no-chosen-chat.json';
+import helloAnim from '@/assets/lottie/hello.json';
 import type { SearchedUser } from '@/types/search';
 import styles from './ChatPage.module.scss';
 
@@ -97,11 +97,14 @@ export function ChatPage() {
 
       <main className={styles.main}>
         {activeChat === null ? (
-          <EmptyState
-            animation={noChosenChatAnim}
-            title="Выберите чат"
-            subtitle="Откройте диалог слева, чтобы начать общение"
-          />
+          <div className={styles.emptyWrap}>
+            <EmptyState
+              animation={helloAnim}
+              title="Выберите чат"
+              subtitle="Откройте диалог слева, чтобы начать общение"
+              titleColor="#000000"
+            />
+          </div>
         ) : (
           <>
             <ChatHeader chat={activeChat} />
