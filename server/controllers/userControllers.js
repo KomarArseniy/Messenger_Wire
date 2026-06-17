@@ -81,24 +81,17 @@ export async function updateAvatarController(req, res) {
         });
     }
 
-    // Путь к загруженному файлу
-    const avatarPath = req.file.path;
-
-    // Поскольку мы обрабатываем только аватар, обновляем только его
-    if (!allowedFields.includes('avatar')) {
-        return res.status(400).json({
-            success: false,
-            message: "Данное поле не поддерживается"
-        });
-    }
+    // Путь к загруженному файлу (URL для доступа по HTTP)
+    const avatarUrl = `/uploads/${req.file.filename}`;
 
     // Обновляем аватар в базе данных
     try {
-        await updateUserField(userId, 'avatar_url', avatarPath);
+        await updateUserField(userId, 'avatar_url', avatarUrl);
 
         return res.status(200).json({
             success: true,
-            message: "Аватар успешно обновлён"
+            message: "Аватар успешно обновлён",
+            avatar_url: avatarUrl
         });
     } catch (error) {
         console.log('Error updating avatar', error);
