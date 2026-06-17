@@ -27,7 +27,7 @@ router.post('/updateProfile/avatar', authenticateUserToken, uploadAvatar, update
 
 router.put('/updateProfile/:field', authenticateUserToken, updateFieldController)
 
-router.get('/search', searchUser)
+router.get('/search', authenticateUserToken, searchUser)
 
 router.get("/chats", authenticateUserToken, getUserChats)
 

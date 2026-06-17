@@ -15,7 +15,9 @@ export function Avatar({ name, src, size = 'md' }: AvatarProps) {
   const [failed, setFailed] = useState(false);
 
   const showImage = src && !failed;
-  const fullSrc = src?.startsWith('http') ? src : `${API_BASE_URL}/${src}`;
+  const fullSrc = src?.startsWith('http')
+    ? src
+    : `${API_BASE_URL}/${src?.replace(/^\//, '')}`;
 
   const className = `${styles.avatar} ${styles[size]}`;
 

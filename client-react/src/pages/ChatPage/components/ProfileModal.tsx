@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import { Modal, Avatar, Button } from '@/components';
-import { updateProfileField } from '@/api/profileApi';
+import { useState, useRef } from 'react';
+import { Modal, Avatar, Button, Spinner } from '@/components';
+import { updateProfileField, uploadAvatar } from '@/api/profileApi';
 import { HttpError } from '@/lib/httpClient';
 import { useSessionStore } from '@/store/sessionStore';
 import type { ProfileField } from '@/api/profileApi';
@@ -33,6 +33,39 @@ export function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
   const [savingKey, setSavingKey] = useState<string | null>(null);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [saved, setSaved] = useState<Record<string, boolean>>({});
+  const [avatarUploading, setAvatarUploading] = useState(false);
+  const [avatarError, setAvatarError] = useState('');
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  async function handleAvatarChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    e.target.value = '';
+    if (!file || !user || !accessToken) return;
+
+    if (!file.type.startsWith('image/')) {
+      setAvatarError('Нужен файл изображения');
+      return;
+    }
+    if (file.size > 5 * 1024 * 1024) {
+      setAvatarError('Максимум 5 МБ');
+      return;
+    }
+
+    setAvatarUploading(true);
+    setAvatarError('');
+    try {
+      const res = await uploadAvatar(file, accessToken);
+      if (res.avatar_url) {
+        setSession(accessToken, { ...user, avatar_url: res.avatar_url });
+      }
+    } catch (err) {
+      setAvatarError(
+        err instanceof Error ? err.message : 'Не удалось загрузить',
+      );
+    } finally {
+      setAvatarUploading(false);
+    }
+  }
 
   async function handleSave(field: ProfileField, storeKey: keyof User) {
     const raw = values[field]?.trim();
@@ -61,12 +94,30 @@ export function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
   return (
     <Modal isOpen={isOpen} onClose={onClose} title="Профиль">
       <div className={styles.avatarBlock}>
-        <Avatar
-          name={user?.full_name ?? user?.username ?? user?.login ?? null}
-          src={user?.avatar_url}
-          size="lg"
+        <button
+          className={styles.avatarButton}
+          onClick={() => fileInputRef.current?.click()}
+          disabled={avatarUploading}
+          aria-label="Изменить аватар"
+        >
+          <Avatar
+            name={user?.full_name ?? user?.username ?? user?.login ?? null}
+            src={user?.avatar_url}
+            size="lg"
+          />
+          <span className={styles.avatarOverlay}>
+            {avatarUploading ? <Spinner size="sm" /> : 'Изменить'}
+          </span>
+        </button>
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/*"
+          hidden
+          onChange={handleAvatarChange}
         />
         <span className={styles.login}>@{user?.username ?? user?.login}</span>
+        {avatarError && <span className={styles.error}>{avatarError}</span>}
       </div>
 
       <div className={styles.fields}>

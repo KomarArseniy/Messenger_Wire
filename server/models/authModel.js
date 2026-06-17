@@ -4,7 +4,7 @@ import db from '../config/db_connect.js';
 export async function createUser(login, email, password_hash) {
     try {
         const result = await db.query(
-            'INSERT INTO users (login, email, password_hash) VALUES ($1, $2, $3) RETURNING *', [login, email, password_hash]
+            'INSERT INTO users (login, email, password_hash, username) VALUES ($1, $2, $3, $1) RETURNING *', [login, email, password_hash]
         );
         return result.rows[0];
     }

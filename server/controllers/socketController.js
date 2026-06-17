@@ -59,6 +59,23 @@ export function configureSockets(io) {
             if (typeof callback === 'function') callback(room);
         })
 
+        // Присоединить всех участников чата к комнате (после создания чата)
+        socket.on('join_chat', async (chatId, callback) => {
+            try {
+                const memberIds = await ChatModel.getChatMemberIds(chatId);
+                for (const memberId of memberIds) {
+                    const memberSocketId = users[memberId];
+                    if (memberSocketId) {
+                        io.sockets.sockets.get(memberSocketId)?.join(chatId);
+                    }
+                }
+                if (typeof callback === 'function') callback({ success: true });
+            } catch (error) {
+                console.error('Ошибка join_chat:', error);
+                if (typeof callback === 'function') callback({ success: false });
+            }
+        })
+
         socket.on("chat_history", async (room, callback) => {
             let messages = null;
             if (room) {
