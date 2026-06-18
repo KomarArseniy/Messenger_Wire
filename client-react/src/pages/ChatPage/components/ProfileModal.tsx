@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react';
-import { Modal, Avatar, Button, Spinner } from '@/components';
-import { updateProfileField, uploadAvatar } from '@/api/profileApi';
+import { Modal, Avatar, Button } from '@/components';
+import { TrashIcon, EditIcon } from '@/components/icons';
+import { updateProfileField, uploadAvatar, deleteAvatar } from '@/api/profileApi';
 import { HttpError } from '@/lib/httpClient';
 import { useSessionStore } from '@/store/sessionStore';
 import type { ProfileField } from '@/api/profileApi';
@@ -67,6 +68,22 @@ export function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
     }
   }
 
+  async function handleDeleteAvatar() {
+    if (!user || !accessToken || !user.avatar_url) return;
+    setAvatarUploading(true);
+    setAvatarError('');
+    try {
+      await deleteAvatar();
+      setSession(accessToken, { ...user, avatar_url: null });
+    } catch (err) {
+      setAvatarError(
+        err instanceof Error ? err.message : 'Не удалось удалить',
+      );
+    } finally {
+      setAvatarUploading(false);
+    }
+  }
+
   async function handleSave(field: ProfileField, storeKey: keyof User) {
     const raw = values[field]?.trim();
     if (!raw || !user || !accessToken) return;
@@ -94,21 +111,33 @@ export function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
   return (
     <Modal isOpen={isOpen} onClose={onClose} title="Профиль">
       <div className={styles.avatarBlock}>
-        <button
-          className={styles.avatarButton}
-          onClick={() => fileInputRef.current?.click()}
-          disabled={avatarUploading}
-          aria-label="Изменить аватар"
-        >
+        <div className={styles.avatarRow}>
+          <button
+            className={`${styles.iconBtn} ${styles.deleteBtn}`}
+            onClick={handleDeleteAvatar}
+            disabled={avatarUploading || !user?.avatar_url}
+            aria-label="Удалить фото"
+            title="Удалить фото"
+          >
+            <TrashIcon width={20} height={20} />
+          </button>
+
           <Avatar
             name={user?.full_name ?? user?.username ?? user?.login ?? null}
             src={user?.avatar_url}
-            size="lg"
+            size="xl"
           />
-          <span className={styles.avatarOverlay}>
-            {avatarUploading ? <Spinner size="sm" /> : 'Изменить'}
-          </span>
-        </button>
+
+          <button
+            className={styles.iconBtn}
+            onClick={() => fileInputRef.current?.click()}
+            disabled={avatarUploading}
+            aria-label="Изменить фото"
+            title="Изменить фото"
+          >
+            <EditIcon width={20} height={20} />
+          </button>
+        </div>
         <input
           ref={fileInputRef}
           type="file"

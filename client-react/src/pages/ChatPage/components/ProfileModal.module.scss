@@ -4,41 +4,61 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: $space-sm;
+  gap: 15px;
   margin-bottom: $space-lg;
 }
 
-.avatarButton {
+.avatarRow {
+  display: flex;
+  align-items: end;
   position: relative;
-  border: none;
-  background: none;
-  padding: 0;
-  border-radius: 50%;
-  cursor: pointer;
-  overflow: hidden;
 
-  &:disabled {
-    cursor: default;
+  & .iconBtn {
+    position: absolute;
+    z-index: 3;
+    &:first-child {
+      right: 75%;
+      top: 74%;
+    }
+    &:last-child {
+      left: 75%;
+      top: 74%;
+    }
   }
 }
 
-.avatarOverlay {
-  position: absolute;
-  inset: 0;
+.iconBtn {
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid $color-border;
   border-radius: 50%;
-  background: rgba(0, 0, 0, 0.45);
-  color: #fff;
-  font-size: 12px;
-  font-weight: 600;
-  opacity: 0;
-  transition: opacity $transition-fast;
+  background: #fff;
+  color: $color-chat-accent;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all $transition-fast;
+
+  &:hover:not(:disabled) {
+    background: $color-chat-hover;
+    border-color: #3390ec;
+  }
+
+  &:disabled {
+    opacity: 0.98;
+    cursor: not-allowed;
+  }
 }
 
-.avatarButton:hover .avatarOverlay {
-  opacity: 1;
+.deleteBtn {
+  color: $color-danger;
+
+  &:hover:not(:disabled) {
+    //background: rgba(224, 84, 106, 0.8);
+    border-color: $color-danger;
+  }
 }
 
 .login {

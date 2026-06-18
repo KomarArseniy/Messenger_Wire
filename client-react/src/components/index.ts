@@ -4,3 +4,4 @@ export { Avatar } from './Avatar';
 export { Spinner } from './Spinner';
 export { Modal } from './Modal';
 export { AuthInput } from './AuthInput';
+export { ToastContainer } from './Toast';

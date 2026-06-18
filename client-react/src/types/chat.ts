@@ -7,6 +7,8 @@ export interface Chat {
   lastMessage: string | null;
   isOnline: boolean;
   unreadCount: number;
+  partnerUsername?: string | null;
+  partnerAbout?: string | null;
 }
 
 export interface ChatsResponse {

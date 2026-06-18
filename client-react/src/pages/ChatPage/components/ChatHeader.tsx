@@ -4,11 +4,16 @@ import styles from './ChatHeader.module.scss';
 
 interface ChatHeaderProps {
   chat: Chat;
+  onClick?: () => void;
 }
 
-export function ChatHeader({ chat }: ChatHeaderProps) {
+export function ChatHeader({ chat, onClick }: ChatHeaderProps) {
   return (
-    <header className={styles.header}>
+    <header
+      className={styles.header}
+      onClick={onClick}
+      role={onClick ? 'button' : undefined}
+    >
       <Avatar name={chat.name} src={chat.avatar} size="md" />
       <div className={styles.info}>
         <span className={styles.name}>{chat.name ?? 'Без имени'}</span>

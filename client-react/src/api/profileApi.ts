@@ -42,3 +42,10 @@ export async function uploadAvatar(
   }
   return data;
 }
+
+export function deleteAvatar() {
+  return request<{ success: boolean; message: string }>(
+    '/api/user/updateProfile/avatar',
+    { method: 'DELETE', auth: true },
+  );
+}

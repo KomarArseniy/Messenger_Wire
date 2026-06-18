@@ -17,7 +17,9 @@ import {
   MessageList,
   MessageInput,
   ProfileModal,
+  UserProfileModal,
 } from './components';
+import { ToastContainer } from '@/components';
 import type { SearchedUser } from '@/types/search';
 import styles from './ChatPage.module.scss';
 
@@ -30,6 +32,7 @@ export function ChatPage() {
   const setActiveChatId = useUiStore((s) => s.setActiveChatId);
   const [search, setSearch] = useState('');
   const [profileOpen, setProfileOpen] = useState(false);
+  const [userProfileOpen, setUserProfileOpen] = useState(false);
   const { result: searchResult, status: searchStatus } = useUserSearch(search);
   const createChat = useCreatePrivateChat();
 
@@ -109,7 +112,10 @@ export function ChatPage() {
             </div>
         ) : (
           <>
-            <ChatHeader chat={activeChat} />
+            <ChatHeader
+              chat={activeChat}
+              onClick={() => setUserProfileOpen(true)}
+            />
             <div className={styles.messages}>
               <MessageList
                 messages={messages}
@@ -127,6 +133,14 @@ export function ChatPage() {
         isOpen={profileOpen}
         onClose={() => setProfileOpen(false)}
       />
+
+      <UserProfileModal
+        isOpen={userProfileOpen}
+        onClose={() => setUserProfileOpen(false)}
+        chat={activeChat}
+      />
+
+      <ToastContainer />
     </div>
   );
 }

@@ -10,6 +10,12 @@
   background: $color-chat-sidebar;
   flex-shrink: 0;
   z-index: 1;
+  cursor: pointer;
+  transition: background $transition-fast;
+
+  &:hover {
+    background: $color-chat-hover;
+  }
 }
 
 .info {

@@ -3,7 +3,7 @@ import { getInitials, getColorFromName } from '@/lib/avatar';
 import { API_BASE_URL } from '@/lib/config';
 import styles from './Avatar.module.scss';
 
-type AvatarSize = 'sm' | 'md' | 'lg';
+type AvatarSize = 'sm' | 'md' | 'lg' | 'xl';
 
 interface AvatarProps {
   name: string | null;

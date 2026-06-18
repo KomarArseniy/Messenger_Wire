@@ -2,7 +2,9 @@ import { useEffect } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { getSocket, markRead } from '@/lib/socket';
 import { queryKeys } from '@/lib/queryKeys';
+import { useToastStore } from '@/store/toastStore';
 import type { Message } from '@/types/message';
+import type { Chat } from '@/types/chat';
 import type { NewMessageEvent, MessagesReadEvent } from '@/types/socket';
 
 export function useIncomingMessages(
@@ -29,6 +31,13 @@ export function useIncomingMessages(
       if (chatId === activeChatId && userId !== undefined) {
         markRead(chatId);
       } else {
+        const chats = queryClient.getQueryData<Chat[]>(queryKeys.chats);
+        const chat = chats?.find((c) => c.id === chatId);
+        useToastStore.getState().addToast({
+          chatName: chat?.name ?? 'Новое сообщение',
+          avatar: chat?.avatar ?? message.avatar_url ?? null,
+          message: message.content,
+        });
         queryClient.invalidateQueries({ queryKey: queryKeys.chats });
       }
     }
