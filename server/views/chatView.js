@@ -9,7 +9,9 @@ export function getUserChatsSuccessResponse(success, userChats) {
             lastActivity: chat.lastActivity,
             lastMessage: chat.lastMessage,
             isOnline: chat.is_online,
-            unreadCount: parseInt(chat.unreadCount) || 0
+            unreadCount: parseInt(chat.unreadCount) || 0,
+            partnerUsername: chat.partnerUsername ?? null,
+            partnerAbout: chat.partnerAbout ?? null
         }))
     };
 }

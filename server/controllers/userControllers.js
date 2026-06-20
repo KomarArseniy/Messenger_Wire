@@ -1,6 +1,7 @@
 import { getUserByID } from '../models/authModel.js';
 import {getUserSuccessResponse, updateFieldErrorResponse, updateFieldSuccessResponse} from '../Views/userView.js';
 import { updateUserField } from "../models/updateUserInfoModel.js";
+import { clearUserAvatar } from "../models/updateUserInfoModel.js";
 import { getUserByUsername } from '../models/userModel.js';
 
 export async function searchUser(req, res) {
@@ -127,5 +128,16 @@ export async function updateFieldController(req, res) {
             errorMessage = "Данное имя пользователя не доступно";
         }
         return res.status(400).json(updateFieldErrorResponse(false,errorMessage || "Ошибка обновления данных"));
+    }
+}
+
+export async function deleteAvatarController(req, res) {
+    const userId = req.user.id;
+    try {
+        await clearUserAvatar(userId);
+        return res.status(200).json({ success: true, message: 'Аватар удалён' });
+    } catch (error) {
+        console.log('deleteAvatarController', error);
+        return res.status(500).json({ success: false, message: 'Ошибка удаления аватара' });
     }
 }

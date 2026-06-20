@@ -5,6 +5,7 @@ import { authenticateUserToken } from '../middlewares/authServices.js';
 import {getCurrentUser, updateAvatarController} from '../controllers/userControllers.js';
 import { updateFieldController } from '../controllers/userControllers.js';
 import { searchUser } from '../controllers/userControllers.js';
+import { deleteAvatarController } from '../controllers/userControllers.js';
 
 import {getUserChats} from "../controllers/chatControllers.js";
 import { createUserChat} from "../controllers/chatControllers.js";
@@ -24,6 +25,8 @@ router.get('/validate-token', authenticateUserToken, (req, res) => {
 })
 
 router.post('/updateProfile/avatar', authenticateUserToken, uploadAvatar, updateAvatarController)
+
+router.delete('/updateProfile/avatar', authenticateUserToken, deleteAvatarController)
 
 router.put('/updateProfile/:field', authenticateUserToken, updateFieldController)
 

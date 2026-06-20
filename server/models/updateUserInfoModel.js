@@ -1,5 +1,12 @@
 import db from "../config/db_connect.js";
 
+export async function clearUserAvatar(userId) {
+    await db.query(
+        `UPDATE users SET avatar_url = NULL WHERE id = $1`,
+        [userId]
+    );
+}
+
 export async function updateUserField(userId, field, value) {
     try {
 

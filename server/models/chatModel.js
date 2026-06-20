@@ -151,6 +151,26 @@ export default class ChatModel {
                         LIMIT 1
                     )
                 END as is_online,
+
+                CASE
+                    WHEN c.is_group THEN NULL
+                    ELSE (
+                        SELECT u.username FROM users u
+                        JOIN chat_members cm ON u.id = cm.user_id
+                        WHERE cm.chat_id = c.id AND u.id != $1
+                        LIMIT 1
+                    )
+                END as "partnerUsername",
+
+                CASE
+                    WHEN c.is_group THEN NULL
+                    ELSE (
+                        SELECT u.about FROM users u
+                        JOIN chat_members cm ON u.id = cm.user_id
+                        WHERE cm.chat_id = c.id AND u.id != $1
+                        LIMIT 1
+                    )
+                END as "partnerAbout",
                 (SELECT m.created_at AT TIME ZONE 'UTC' AT TIME ZONE 'Europe/Moscow' FROM messages m
                 WHERE m.chat_id = c.id
                 ORDER BY m.created_at DESC 
