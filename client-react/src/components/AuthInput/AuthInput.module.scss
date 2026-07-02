@@ -1,0 +1,106 @@
+@use 'variables' as *;
+
+.field {
+  display: flex;
+  flex-direction: column;
+}
+
+.wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.icon {
+  position: absolute;
+  left: 14px;
+  display: flex;
+  color: $color-auth-accent;
+  pointer-events: none;
+}
+
+.input {
+  width: 100%;
+  height: 44px;
+  padding: 0 42px;
+  background: $color-auth-input-bg;
+  border: 1px solid rgba(0, 0, 0, 0.07);
+  border-radius: $radius-full;
+  font-family: $font-family;
+  font-size: 14px;
+  color: $color-text;
+  transition: all $transition-base;
+
+  &:hover {
+    background: $color-auth-input-bg-hover;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: $color-auth-accent;
+    box-shadow: 0 0 0 3px rgba($color-auth-accent, 0.12);
+  }
+}
+
+.label {
+  position: absolute;
+  left: 42px;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 0 4px;
+  background: transparent;
+  color: $color-text-muted;
+  font-size: 14px;
+  pointer-events: none;
+  transition: all $transition-fast;
+}
+
+.input:focus ~ .label,
+.input:not(:placeholder-shown) ~ .label {
+  top: 0;
+  left: 16px;
+  transform: translateY(-50%);
+  font-size: 11px;
+  color: $color-auth-accent;
+  padding: 0 4px;
+  background: $color-auth-bg-to;
+  border-radius: $radius-sm;
+}
+
+.hasError {
+  border-color: $color-auth-error;
+
+  &:focus {
+    border-color: $color-auth-error;
+    box-shadow: 0 0 0 3px rgba($color-auth-error, 0.1);
+  }
+}
+
+.hasError ~ .label {
+  color: $color-auth-error;
+}
+
+.eye {
+  position: absolute;
+  right: 12px;
+  display: flex;
+  padding: 0;
+  border: none;
+  background: none;
+  color: $color-text-muted;
+  cursor: pointer;
+  transition: color $transition-fast;
+
+  &:hover {
+    color: $color-auth-accent;
+  }
+}
+
+.error {
+  min-height: 14px;
+  margin: 3px 0 0 14px;
+  font-size: 10px;
+  font-weight: 500;
+  line-height: 1.2;
+  color: $color-auth-error;
+}
