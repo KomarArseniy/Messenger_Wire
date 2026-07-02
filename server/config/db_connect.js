@@ -33,7 +33,7 @@ const pool = new Pool({
     ...connectionConfig,
     max: parseInt(process.env.DB_POOL_MAX) || 20, // Максимальное количество соединений
     idleTimeoutMillis: 30000, // Закрыть соединение после 30 сек неактивности
-    connectionTimeoutMillis: 5000, // Ошибка, если подключение дольше 5 сек
+    connectionTimeoutMillis: 5000, // Ошибка, если  подключение дольше 5 сек
     allowExitOnIdle: true, // Разрешить завершение процесса, когда соединения простаивают
 });
 

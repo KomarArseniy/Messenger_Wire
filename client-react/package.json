@@ -4,6 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "start": "serve -s dist -l $PORT",
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
@@ -34,6 +35,7 @@
     "globals": "^17.7.0",
     "prettier": "^3.9.4",
     "sass": "^1.101.0",
+    "serve": "^14.2.6",
     "typescript": "~6.0.2",
     "typescript-eslint": "^8.62.0",
     "vite": "^8.1.1"

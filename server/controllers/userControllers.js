@@ -1,5 +1,5 @@
 import { getUserByID } from '../models/authModel.js';
-import {getUserSuccessResponse, updateFieldErrorResponse, updateFieldSuccessResponse} from '../Views/userView.js';
+import {getUserSuccessResponse, updateFieldErrorResponse, updateFieldSuccessResponse} from '../views/userView.js';
 import { updateUserField } from "../models/updateUserInfoModel.js";
 import { clearUserAvatar } from "../models/updateUserInfoModel.js";
 import { getUserByUsername } from '../models/userModel.js';
