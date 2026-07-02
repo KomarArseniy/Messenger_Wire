@@ -18,4 +18,5 @@ configureSockets(io)
 
 server.listen(PORT, () => {
     console.log(`Server started on port ${PORT}`);
+    console.log('🔗 DATABASE_URL exists?', !!process.env.DATABASE_URL);
 })

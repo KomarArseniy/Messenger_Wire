@@ -3,15 +3,15 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import path from 'path';
 import cookieParser from 'cookie-parser';
-import { fileURLToPath } from 'url';  // Для работы с import.meta.url
+import { fileURLToPath } from 'url';
 
 import authRouter from './routes/authRouter.js';
 import userRouter from './routes/userRouter.js';
 
 dotenv.config();
-// Получаем текущий путь к файлу
+
 const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename); // Путь к директории текущего файла
+const __dirname = path.dirname(__filename);
 
 const app = express();
 
@@ -21,6 +21,8 @@ const allowedOrigins = [
     'http://127.0.0.1:5500',
     'http://localhost:5173',
     'http://localhost:5174',
+    'https://messengerwire-production-6230.up.railway.app',
+    'https://messengerwire-production.up.railway.app',
 ];
 
 const corsOrigin = (origin, callback) => {
@@ -29,22 +31,21 @@ const corsOrigin = (origin, callback) => {
     if (/^http:\/\/(localhost|127\.0\.0\.1):\d+$/.test(origin)) {
         return callback(null, true);
     }
+    console.log('CORS blocked origin:', origin); // 👈 Для отладки
     return callback(new Error('Not allowed by CORS'));
 };
 
 app.use(cookieParser());
 app.use(express.json());
-app.use(cors( {
+app.use(cors({
     origin: corsOrigin,
     credentials: true
 }));
 
-// Подключение маршрутизатора аунтификации, авторизации и тп
-app.use('/api/auth', authRouter );
+app.use('/api/auth', authRouter);
 
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// Подключение маршрутизатора функций всего что связано с конечным пользователем
-app.use('/api/user', userRouter)
+app.use('/api/user', userRouter);
 
 export default app;

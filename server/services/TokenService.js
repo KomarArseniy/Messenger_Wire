@@ -8,8 +8,8 @@ export class TokenService {
     constructor() {
         this.accessSecret = process.env.JWT_ACCESS_SECRET;
         this.refreshSecret = process.env.JWT_REFRESH_SECRET;
-        this.accessExpiresIn = process.env.JWT_ACCESS_EXPIRES_IN;
-        this.refreshExpiresIn = process.env.JWT_REFRESH_EXPIRES_IN;
+        this.accessExpiresIn = process.env.JWT_ACCESS_EXPIRES_IN || '2h';
+        this.refreshExpiresIn = process.env.JWT_REFRESH_EXPIRES_IN || '7d';
     }
 
     generateAccessToken(user) {
