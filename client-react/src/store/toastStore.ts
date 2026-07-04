@@ -1,16 +1,16 @@
-import { create } from 'zustand'
+import { create } from 'zustand';
 
 export interface Toast {
-  id: string
-  chatName: string
-  avatar: string | null
-  message: string
+  id: string;
+  chatName: string;
+  avatar: string | null;
+  message: string;
 }
 
 interface ToastState {
-  toasts: Toast[]
-  addToast: (toast: Omit<Toast, 'id'>) => void
-  removeToast: (id: string) => void
+  toasts: Toast[];
+  addToast: (toast: Omit<Toast, 'id'>) => void;
+  removeToast: (id: string) => void;
 }
 
 export const useToastStore = create<ToastState>((set) => ({
@@ -23,4 +23,4 @@ export const useToastStore = create<ToastState>((set) => ({
     set((state) => ({
       toasts: state.toasts.filter((t) => t.id !== id),
     })),
-}))
+}));

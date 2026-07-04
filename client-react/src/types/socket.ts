@@ -40,7 +40,10 @@ export interface ServerToClientEvents {
 
 export interface ClientToServerEvents {
   join_room: (room: number, callback: (room: number) => void) => void;
-  join_chat: (chatId: number, callback?: (ack: { success: boolean }) => void) => void;
+  join_chat: (
+    chatId: number,
+    callback?: (ack: { success: boolean }) => void,
+  ) => void;
   send_message: (
     payload: SendMessagePayload,
     callback: (ack: SendMessageAck) => void,

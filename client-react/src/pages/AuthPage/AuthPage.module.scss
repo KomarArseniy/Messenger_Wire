@@ -362,3 +362,13 @@
     transform: translateX(0) scale(1);
   }
 }
+
+@media (max-width: $breakpoint-small) {
+  .card {
+    padding: 36px 24px;
+  }
+
+  .title {
+    font-size: 24px;
+  }
+}

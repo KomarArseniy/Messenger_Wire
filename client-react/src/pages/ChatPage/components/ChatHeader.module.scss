@@ -3,14 +3,43 @@
 .header {
   display: flex;
   align-items: center;
-  gap: $space-md;
+  gap: $space-sm;
   padding: $space-md $space-lg;
   height: 72px;
   border-bottom: 1px solid $color-border;
   background: $color-chat-sidebar;
   flex-shrink: 0;
   z-index: 1;
+}
+
+.backBtn {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: $color-text;
   cursor: pointer;
+  transition: background $transition-fast;
+
+  &:hover {
+    background: $color-chat-hover;
+  }
+}
+
+.main {
+  display: flex;
+  align-items: center;
+  gap: $space-md;
+  flex: 1;
+  min-width: 0;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 10px;
   transition: background $transition-fast;
 
   &:hover {
@@ -22,11 +51,15 @@
   display: flex;
   flex-direction: column;
   gap: 2px;
+  min-width: 0;
 }
 
 .name {
   font-weight: 600;
   font-size: 16px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .status {
@@ -35,5 +68,11 @@
 
   &.online {
     color: $color-chat-accent;
+  }
+}
+
+@media (max-width: $breakpoint-mobile) {
+  .backBtn {
+    display: flex;
   }
 }

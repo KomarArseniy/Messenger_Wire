@@ -1,7 +1,11 @@
 import { useState, useRef } from 'react';
 import { Modal, Avatar, Button } from '@/components';
 import { TrashIcon, EditIcon } from '@/components/icons';
-import { updateProfileField, uploadAvatar, deleteAvatar } from '@/api/profileApi';
+import {
+  updateProfileField,
+  uploadAvatar,
+  deleteAvatar,
+} from '@/api/profileApi';
 import { HttpError } from '@/lib/httpClient';
 import { useSessionStore } from '@/store/sessionStore';
 import type { ProfileField } from '@/api/profileApi';
@@ -76,9 +80,7 @@ export function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
       await deleteAvatar();
       setSession(accessToken, { ...user, avatar_url: null });
     } catch (err) {
-      setAvatarError(
-        err instanceof Error ? err.message : 'Не удалось удалить',
-      );
+      setAvatarError(err instanceof Error ? err.message : 'Не удалось удалить');
     } finally {
       setAvatarUploading(false);
     }

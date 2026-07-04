@@ -142,3 +142,11 @@
     color: $color-danger;
   }
 }
+
+@media (max-width: $breakpoint-mobile) {
+  .sidebar {
+    width: 100%;
+    min-width: 0;
+    border-right: none;
+  }
+}

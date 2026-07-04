@@ -36,17 +36,27 @@ export function MessageList({
 
   if (isError) {
     return (
-      <div className={styles.centered}>Не удалось загрузить сообщения</div>
+      <div className={styles.emptyPlate}>
+        <div className={styles.errorPlateInner}>
+          Не удалось загрузить сообщения
+        </div>
+      </div>
     );
   }
 
   if (!messages || messages.length === 0) {
     return (
-      <EmptyState
-        animation={noMessagesAnim}
-        title="Сообщений пока нет"
-        subtitle="Напишите первым — начните разговор"
-      />
+      <div className={styles.emptyPlate}>
+        <div className={styles.emptyPlateInner}>
+          <EmptyState
+            animation={noMessagesAnim}
+            title="Сообщений пока нет"
+            subtitle="Напишите первым — начните разговор"
+            titleColor="#ffffff"
+            size={160}
+          />
+        </div>
+      </div>
     );
   }
 

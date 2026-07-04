@@ -86,7 +86,9 @@ export function ChatPage() {
   }
 
   return (
-    <div className={styles.page}>
+    <div
+      className={`${styles.page} ${activeChatId !== null ? styles.chatOpen : ''}`}
+    >
       <ChatList
         chats={chats}
         isLoading={isLoading}
@@ -107,14 +109,15 @@ export function ChatPage() {
 
       <main className={styles.main}>
         {activeChat === null ? (
-            <div className={styles.watermark} aria-hidden="true">
-              WIRE
-            </div>
+          <div className={styles.watermark} aria-hidden="true">
+            WIRE
+          </div>
         ) : (
           <>
             <ChatHeader
               chat={activeChat}
               onClick={() => setUserProfileOpen(true)}
+              onBack={() => setActiveChatId(null)}
             />
             <div className={styles.messages}>
               <MessageList

@@ -32,3 +32,28 @@
     backdrop-filter: blur(15px);
   }
 }
+
+.emptyPlate {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: $space-xl;
+}
+
+.emptyPlateInner {
+  border-radius: 24px;
+  background: rgba(10, 10, 10, 0.1);
+  backdrop-filter: blur(15px);
+  padding: $space-lg;
+}
+
+.errorPlateInner {
+  border-radius: 24px;
+  background: rgba(10, 10, 10, 0.1);
+  backdrop-filter: blur(15px);
+  padding: $space-lg $space-xl;
+  color: #fff;
+  font-size: $font-size-base;
+  text-align: center;
+}

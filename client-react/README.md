@@ -2,14 +2,10 @@
 
 **Full-stack pet-проект — real-time мессенджер с WebSocket-обменом сообщениями, статусами доставки в стиле Telegram, онлайн-присутствием и JWT-аутентификацией с auto-refresh.**
 
-<!-- TODO: вставить бейджи / скриншот-баннер -->
-
-**[Live Demo](<TODO: ссылка на задеплоенный фронтенд>)**
-
 <div align="center">
 
-![LIVE DEMO](https://img.shields.io/badge/LIVE_DEMO-00C7B7?style=for-the-badge)
-![Messenger_Wire](https://img.shields.io/badge/Messenger_WIRE-000000?style=for-the-badge)
+[![LIVE DEMO](https://img.shields.io/badge/LIVE_DEMO-00C7B7?style=for-the-badge)](https://messengerwire-production-6230.up.railway.app/)
+[![Messenger_Wire](https://img.shields.io/badge/Messenger_WIRE-000000?style=for-the-badge)](https://messengerwire-production-6230.up.railway.app/)
 
 </div>
 
@@ -303,10 +299,14 @@ npm start          # node server.js
 
 Проект создан исключительно в учебных и демонстрационных целях.
 
-<!--
-TODO перед публикацией:
-- вставить ссылки: Live Demo, репозиторий, prod API URL
-- добавить скриншоты/GIF в баннер и разделы
-- указать автора и контакты
-- проверить точные пути эндпоинтов auth (register/login) по своему authRouter
--->
+## Превью проекта
+
+Страница входа : 
+
+![alt text](image.png)
+
+Главная страница приложения: 
+![alt text](image-1.png)
+
+Чат: 
+![alt text](image-2.png)

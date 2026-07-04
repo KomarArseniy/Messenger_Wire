@@ -76,3 +76,15 @@
     transform: translateX(0);
   }
 }
+
+@media (max-width: $breakpoint-mobile) {
+  .container {
+    right: 12px;
+    left: 12px;
+    bottom: 12px;
+  }
+
+  .toast {
+    width: auto;
+  }
+}
