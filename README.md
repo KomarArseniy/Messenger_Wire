@@ -158,7 +158,7 @@ server/
 
 ## REST API
 
-**Base URL (prod):** `<TODO: ссылка на задеплоенный сервер>`
+**Base URL (prod):** `(https://messengerwire-production.up.railway.app)`
 
 | Метод | Endpoint | Auth | Описание |
 |---|---|---|---|
@@ -197,7 +197,7 @@ server/
 ### 1. Клонирование
 
 ```bash
-git clone <TODO: ссылка на репозиторий>
+git clone https://github.com/KomarArseniy/Messenger_Wire
 cd Wire_messenger
 ```
 
@@ -303,10 +303,10 @@ npm start          # node server.js
 
 Страница входа : 
 
-![alt text](image.png)
+![alt text](assets/screenshots/image.png)
 
 Главная страница приложения: 
-![alt text](image-1.png)
+![alt text](assets/screenshots/image-1.png)
 
 Чат: 
-![alt text](image-2.png)
+![alt text](assets/screenshots/image-2.png)
