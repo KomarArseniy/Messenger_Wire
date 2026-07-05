@@ -37,7 +37,7 @@ export default class ChatModel {
                     SELECT 
                         m.id,
                         m.content,
-                        m.created_at AT TIME ZONE 'UTC' AT TIME ZONE 'Europe/Moscow' as created_at,
+                        to_char(m.created_at, 'YYYY-MM-DD"T"HH24:MI:SS.MS"Z"') as created_at,
                         u.id as sender_id,
                         NOT EXISTS (
                             SELECT 1 FROM unread_messages um
@@ -171,7 +171,7 @@ export default class ChatModel {
                         LIMIT 1
                     )
                 END as "partnerAbout",
-                (SELECT m.created_at AT TIME ZONE 'UTC' AT TIME ZONE 'Europe/Moscow' FROM messages m
+                (SELECT to_char(m.created_at, 'YYYY-MM-DD"T"HH24:MI:SS.MS"Z"') FROM messages m
                 WHERE m.chat_id = c.id
                 ORDER BY m.created_at DESC 
                 LIMIT 1) AS "lastActivity", 
