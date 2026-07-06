@@ -109,9 +109,9 @@ export function ChatPage() {
 
       <main className={styles.main}>
         {activeChat === null ? (
-          <div className={styles.watermark} aria-hidden="true">
-            WIRE
-          </div>
+            <div className={styles.watermark}>
+              WIRE
+            </div>
         ) : (
           <>
             <ChatHeader

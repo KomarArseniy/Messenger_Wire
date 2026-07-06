@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Modal, Avatar, Button } from '@/components';
 import { TrashIcon, EditIcon } from '@/components/icons';
 import {
@@ -41,6 +41,21 @@ export function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
   const [avatarUploading, setAvatarUploading] = useState(false);
   const [avatarError, setAvatarError] = useState('');
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // При открытии модалки синхронизируем поля с актуальными данными
+  // и сбрасываем ошибки/статусы, чтобы не оставалось введённого с прошлого раза
+  useEffect(() => {
+    if (isOpen) {
+      setValues({
+        username: user?.username ? `@${user.username.replace(/^@/, '')}` : '',
+        fullname: user?.full_name ?? '',
+        about: user?.about ?? '',
+      });
+      setErrors({});
+      setSaved({});
+      setAvatarError('');
+    }
+  }, [isOpen, user]);
 
   async function handleAvatarChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
