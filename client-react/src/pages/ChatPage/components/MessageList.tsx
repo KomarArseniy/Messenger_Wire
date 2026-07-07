@@ -21,9 +21,19 @@ export function MessageList({
   myId,
 }: MessageListProps) {
   const bottomRef = useRef<HTMLDivElement>(null);
+  const prevCountRef = useRef(0);
 
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+    const count = messages?.length ?? 0;
+    const isFirstLoad = prevCountRef.current === 0 && count > 0;
+    const hasNew = count > prevCountRef.current;
+    prevCountRef.current = count;
+
+    // Мгновенный скролл (без smooth) — не перерисовывает десятки кадров
+    // поверх тяжёлого фона. Скроллим только при первой загрузке или новом сообщении
+    if (isFirstLoad || hasNew) {
+      bottomRef.current?.scrollIntoView({ behavior: 'auto' });
+    }
   }, [messages]);
 
   if (isLoading) {

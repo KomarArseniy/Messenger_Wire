@@ -109,9 +109,7 @@ export function ChatPage() {
 
       <main className={styles.main}>
         {activeChat === null ? (
-            <div className={styles.watermark}>
-              WIRE
-            </div>
+          <div className={styles.watermark}>WIRE</div>
         ) : (
           <>
             <ChatHeader

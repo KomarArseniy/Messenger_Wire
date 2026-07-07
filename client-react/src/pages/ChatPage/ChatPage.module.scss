@@ -21,6 +21,7 @@
   inset: 0;
   background: linear-gradient(135deg, #a3c4e8 0%, #7ba7d6 50%, #9bbde2 100%);
   z-index: 0;
+  transform: translateZ(0);
 }
 
 .main::after {
@@ -34,6 +35,7 @@
   background-repeat: repeat;
   background-size: 430px;
   z-index: 0;
+  transform: translateZ(0);
 }
 
 .messages {
@@ -41,6 +43,8 @@
   overflow-y: auto;
   position: relative;
   z-index: 1;
+  transform: translateZ(0);
+  -webkit-overflow-scrolling: touch;
 }
 
 .watermark {
@@ -59,13 +63,13 @@
   opacity: 0.9;
 
   background: linear-gradient(
-                  110deg,
-                  #ffffff 0%,
-                  #cfeaf1 20%,
-                  #6fd6e7 35%,
-                  #cfeaf1 50%,
-                  #ffffff 70%,
-                  #cfeaf1 100%
+    110deg,
+    #ffffff 0%,
+    #cfeaf1 20%,
+    #6fd6e7 35%,
+    #cfeaf1 50%,
+    #ffffff 70%,
+    #cfeaf1 100%
   );
   background-size: 200% auto;
   background-clip: text;
