@@ -7,7 +7,12 @@ export function loginSuccessResponse(user, accessToken) {
             id: user.id,
             login: user.login,
             username: user.username,
-            email: user.email
+            email: user.email,
+            avatar_url: user.avatar_url,
+            full_name: user.full_name,
+            about: user.about,
+            status: user.status,
+            last_seen_at: user.last_seen_at
         }
     };
 }
@@ -28,7 +33,12 @@ export function registerSuccessResponse(user, accessToken) {
             id: user.id,
             login: user.login,
             username: user.username,
-            email: user.email
+            email: user.email,
+            avatar_url: user.avatar_url,
+            full_name: user.full_name,
+            about: user.about,
+            status: user.status,
+            last_seen_at: user.last_seen_at
         }
     };
 }
