@@ -41,6 +41,26 @@ export function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
   const [avatarUploading, setAvatarUploading] = useState(false);
   const [avatarError, setAvatarError] = useState('');
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const wasOpenRef = useRef(false);
+
+  // Сбрасываем форму ТОЛЬКО в момент открытия модалки (false → true),
+  // а не на каждое изменение user — иначе сохранение поля затирает состояние
+  useEffect(() => {
+    if (isOpen && !wasOpenRef.current) {
+      wasOpenRef.current = true;
+      setValues({
+        username: user?.username ? `@${user.username.replace(/^@/, '')}` : '',
+        fullname: user?.full_name ?? '',
+        about: user?.about ?? '',
+      });
+      setErrors({});
+      setSaved({});
+      setAvatarError('');
+    }
+    if (!isOpen) {
+      wasOpenRef.current = false;
+    }
+  }, [isOpen, user]);
 
   // При открытии модалки синхронизируем поля с актуальными данными
   // и сбрасываем ошибки/статусы, чтобы не оставалось введённого с прошлого раза

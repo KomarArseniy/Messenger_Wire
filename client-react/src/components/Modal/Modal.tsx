@@ -19,11 +19,26 @@ export function Modal({ isOpen, onClose, title, children }: ModalProps) {
     };
 
     document.addEventListener('keydown', handleKeyDown);
-    document.body.style.overflow = 'hidden';
+
+    // Блокируем прокрутку фона. На iOS Safari overflow:hidden не работает,
+    // поэтому фиксируем body по текущей позиции скролла
+    const scrollY = window.scrollY;
+    const { body } = document;
+    body.style.position = 'fixed';
+    body.style.top = `-${scrollY}px`;
+    body.style.left = '0';
+    body.style.right = '0';
+    body.style.overflow = 'hidden';
 
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
-      document.body.style.overflow = '';
+      body.style.position = '';
+      body.style.top = '';
+      body.style.left = '';
+      body.style.right = '';
+      body.style.overflow = '';
+      // Возвращаем пользователя на то же место
+      window.scrollTo(0, scrollY);
     };
   }, [isOpen, onClose]);
 
