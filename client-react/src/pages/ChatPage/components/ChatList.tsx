@@ -2,7 +2,6 @@ import { Spinner } from '@/components';
 import { EmptyState } from '@/components/EmptyState';
 import {
   SearchIcon,
-  GroupIcon,
   LogoutIcon,
   UserIcon,
 } from '@/components/icons';
@@ -38,7 +37,6 @@ export function ChatList({
   activeChatId,
   search,
   onSearchChange,
-  onCreateGroup,
   onSelect,
   onLogout,
   matchedChats,
@@ -62,14 +60,6 @@ export function ChatList({
             placeholder="Поиск пользователей…"
           />
         </div>
-        <button
-          className={styles.iconBtn}
-          onClick={onCreateGroup}
-          aria-label="Создать групповой чат"
-          title="Создать групповой чат"
-        >
-          <GroupIcon width={20} height={20} />
-        </button>
       </header>
 
       <div className={styles.list}>
